@@ -1,0 +1,80 @@
+---
+title: Class Test
+author: Nicholas J. Clark
+date: '2019-12-04'
+slug: class-test
+categories:
+  - R
+tags:
+  - development
+description: ''
+---
+
+
+
+<div id="contact-information" class="section level1">
+<h1>Contact Information</h1>
+<p>LTC Nick Clark</p>
+<p><a href="mailto:nicholas.clark@westpoint.edu" class="email">nicholas.clark@westpoint.edu</a></p>
+<p>Thayer Hall Room 249</p>
+<p>845-938-7461</p>
+<p>#Course Overview</p>
+<p> Statistics</p>
+<p>-Learn Statistics by doing</p>
+<p>-Hands on/interactive</p>
+<p>-R/Rstudio</p>
+<p>-Course Overview</p>
+<p>-Graded Events</p>
+<p>#Introductions</p>
+<p>#Berkely Admissions Data</p>
+<p>In the early 1970s, the University of California at Berkeley was concerned with possible
+discrimination against women in its graduate admissions process. Data about the applicants for
+the 1972–73 school year were recorded from several programs, including their sex and whether
+or not they were accepted (Bickel &amp; O’Connell, Science, 1975).</p>
+<pre class="r"><code>#install.packages(&quot;tidyverse&quot;)
+library(tidyverse)
+berkley.data&lt;-read.table(&quot;http://www.isi-stats.com/isi2/data/Berkeley.txt&quot;,header=T)</code></pre>
+<p>Observational Unit:</p>
+
+<p>Response Variable:</p>
+
+<p>Values Response Variable can take on:</p>
+
+<p>Visualize</p>
+<pre class="r"><code>ggplot(data=berkley.data,aes(Accepted))+geom_histogram(stat=&quot;count&quot;)
+## Warning: Ignoring unknown parameters: binwidth, bins, pad</code></pre>
+<p><img src="/post/2019-12-04-class-test_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Explore</p>
+<p>Visualize the table:</p>
+<pre class="r"><code>#install.packages
+library(ggmosaic)
+ggplot(data=no.program)+
+  geom_mosaic(aes(x=product(Accepted,Sex),fill=Accepted))</code></pre>
+<p><img src="/post/2019-12-04-class-test_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+What’s your thoughts?</p>
+
+<p>What would the mosaic plot look like if sex was not associated with acceptance?</p>
+
+<p>What other variables might help us predict whether or not someone would be accepted?</p>
+
+<pre class="r"><code>ggplot(data=berkley.data)+
+  geom_mosaic(aes(x=product(Accepted,Sex),fill=Accepted))+
+  facet_grid(Program~.)</code></pre>
+<p><img src="/post/2019-12-04-class-test_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>What are your thoughts looking at this plot?</p>
+
+<p>How can it be that females have higher acceptance rates than males in Program A AND in Program F but when we combine the two, the overall acceptance rate is noticeably smaller for females?</p>
+
+<p>In examining gender and acceptance what is </p>
+
+<p>What else could contribute to an admissions decision other than sex and program?</p>
+
+<p>Sources of Variation Diagram:</p>
+
+<div style="page-break-after: always;"></div>
+<p>Six Steps of a statistical investigation</p>
+
+<p>Did we do this with the Berkley Data? What would you tell the college administrators?</p>
+
+<p>Let’s brainstorm how to write a statistical model for the Berkley data</p>
+</div>
