@@ -1,14 +1,13 @@
 ---
-title: Class Test
-author: Nicholas J. Clark
-date: '2019-12-04'
-slug: class-test
-categories:
-  - R
-tags:
-  - development
-description: ''
+title: "Class Test"
+author: "Nicholas Clark"
+date: 2019-07-23T21:13:14-05:00
+categories: ["R"]
+tags: ["R Markdown", "plot", "regression"]
 ---
+
+
+# R Markdown
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE)
@@ -26,7 +25,7 @@ Thayer Hall Room 249
 
 845-938-7461
 
-#Course Overview
+# Course Overview
 
 \textit{Applied } Statistics
 
