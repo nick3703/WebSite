@@ -1,0 +1,25 @@
+---
+title: "TestPost"
+author: "Nicholas J. Clark"
+date: '2019-12-04'
+slug: testpost
+categories:
+  - R
+tags:
+  - R Markdown
+description: ''
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+library(tidyverse)
+```
+
+
+Here we are testing out R code
+
+```{r}
+x<-data.frame(dat=rnorm(1000))
+x %>% ggplot(aes(x=dat))+geom_histogram()
+```

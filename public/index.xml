@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>My Name</copyright>
-    <lastBuildDate>Thu, 23 Jul 2015 21:13:14 -0500</lastBuildDate>
+    <lastBuildDate>Wed, 04 Dec 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>TestPost</title>
+      <link>/2019/12/04/2019-12-04-testpost/</link>
+      <pubDate>Wed, 04 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/12/04/2019-12-04-testpost/</guid>
+      <description>Here we are testing out R code
+x&amp;lt;-data.frame(dat=rnorm(1000))x %&amp;gt;% ggplot(aes(x=dat))+geom_histogram()## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</description>
+    </item>
     
     <item>
       <title>Hello R Markdown</title>
