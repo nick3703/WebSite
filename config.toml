@@ -77,5 +77,5 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     
 [[menu.main]]
     name = "MA376 Course Notes"
-    url = "/files/CourseNotes/"
+    url = "/project/Courses/"
     weight = 100
