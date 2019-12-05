@@ -1,5 +1,5 @@
 ---
-title: "ERCA-II Slides"
+title: ERCA-II Slides
 author: "Nicholas J. Clark"
 date: '2019-12-04'
 slug: testpost
