@@ -7,18 +7,18 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>My Name</copyright>
-    <lastBuildDate>Tue, 18 Nov 2014 02:13:50 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 04 Dec 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/project/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>My awesome project</title>
-      <link>/project/my-awesome-project/</link>
-      <pubDate>Tue, 18 Nov 2014 02:13:50 +0000</pubDate>
+      <title>ERCA-II Slides</title>
+      <link>/project/testpost/</link>
+      <pubDate>Wed, 04 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>/project/my-awesome-project/</guid>
-      <description>About project Aenean ipsum justo, semper eu nisl ut, pretium tincidunt sem. Praesent et diam sit amet lacus lobortis dictum a id lacus. Quisque hendrerit sit amet turpis eu varius. Ut id lorem ac felis ultrices tincidunt. Pellentesque consequat arcu ac fringilla imperdiet. Phasellus pellentesque, sapien non pulvinar blandit, sapien ante aliquet felis, vel porttitor sapien ante in lacus. Fusce non urna aliquet, malesuada nibh vel, luctus urna. Phasellus ut lacus molestie, varius purus quis, malesuada lorem.</description>
+      <guid>/project/testpost/</guid>
+      <description></description>
     </item>
     
   </channel>
