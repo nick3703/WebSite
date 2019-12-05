@@ -12,6 +12,9 @@ description: ''
 
 
 [Lesson 1](https://gallant-ritchie-afafb4.netlify.com/files/CourseNotes/Lsn_1.pdf)
+
 [Lesson 2](https://gallant-ritchie-afafb4.netlify.com/files/CourseNotes/Lsn_2_376.pdf)
+
 [Lesson 3](https://gallant-ritchie-afafb4.netlify.com/files/CourseNotes/Lsn_3.pdf)
+
 [Lesson 4](https://gallant-ritchie-afafb4.netlify.com/files/CourseNotes/Lsn_4.pdf)
