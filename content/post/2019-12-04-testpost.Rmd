@@ -16,4 +16,6 @@ knitr::opts_chunk$set(collapse = TRUE)
 library(tidyverse)
 ```
 
-knitr::include_url('static/slides/IPR.html')
+```{r}
+knitr::include_url("https://gallant-ritchie-afafb4.netlify.com/slides/IPR.html")
+```

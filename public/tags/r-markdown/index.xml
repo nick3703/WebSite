@@ -27,7 +27,7 @@
       <pubDate>Wed, 04 Dec 2019 00:00:00 +0000</pubDate>
       
       <guid>/2019/12/04/2019-12-04-testpost/</guid>
-      <description>knitr::include_url(‘static/slides/IPR.html’)</description>
+      <description>knitr::include_url(&amp;quot;https://gallant-ritchie-afafb4.netlify.com/slides/IPR.html&amp;quot;)</description>
     </item>
     
     <item>
