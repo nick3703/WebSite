@@ -16,10 +16,4 @@ knitr::opts_chunk$set(collapse = TRUE)
 library(tidyverse)
 ```
 
-
-Here we are testing out R code
-
-```{r}
-x<-data.frame(dat=rnorm(1000))
-x %>% ggplot(aes(x=dat))+geom_histogram()
-```
+<iframe width="100%" height="150" name="iframe" src="IPR.html"></iframe>

@@ -68,16 +68,6 @@
   </url>
   
   <url>
-    <loc>/project/my-awesome-project/</loc>
-    <lastmod>2014-11-18T02:13:50+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/project/</loc>
-    <lastmod>2014-11-18T02:13:50+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/2014/09/28/creating-a-new-theme/</loc>
     <lastmod>2014-09-28T02:13:50+00:00</lastmod>
   </url>
@@ -125,6 +115,11 @@
   <url>
     <loc>/tags/hugo/</loc>
     <lastmod>2014-04-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/1/01/01/ipr/</loc>
+    <priority>0</priority>
   </url>
   
 </urlset>
