@@ -1,0 +1,15 @@
+---
+title: MA376 Course Notes
+author: Nicholas J. Clark
+date: '2019-12-05'
+slug: ma376-course-notes
+categories:
+  - R
+tags:
+  - R Markdown
+description: ''
+---
+
+```{r, out.width="0.3\\linewidth", include=TRUE, fig.align="center", fig.cap=c("your caption"), echo=TRUE}
+knitr::include_graphics("https://gallant-ritchie-afafb4.netlify.com/files/CourseNotes/Lsn_1.pdf")
+```
