@@ -10,6 +10,4 @@ tags:
 description: ''
 ---
 
-```{r, out.width="0.3\\linewidth", include=TRUE, fig.align="center", fig.cap=c("your caption"), echo=TRUE}
-knitr::include_graphics("https://gallant-ritchie-afafb4.netlify.com/files/CourseNotes/Lsn_1.pdf")
-```
+[Lesson 1](https://gallant-ritchie-afafb4.netlify.com/project/courses/2019-12-05-ma376-course-notes/)
