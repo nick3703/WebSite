@@ -29,14 +29,8 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     intro = true
     headline = "Nicholas J Clark"
     description = "Statistics and Data Science Projects"
-    github = "https://github.com/XXX"
-    gitlab = "https://gitlab.com/XXX"
-    linkedin = "https://linkedin.com/in/XXX/"
-    gplus = "https://google.com/+XXX"
-    twitter = "https://twitter.com/XXX"
-    stackoverflow = "https://stackoverflow.com/users/XXX/YYY"
-    facebook = "https://www.facebook.com/username"
-    email = "XXX@example.com"
+    linkedin = "https://www.linkedin.com/in/nicholas-clark-4a822513a/"
+    email = "nicholas.clark@westpoint.edu"
     opengraph = true
     shareTwitter = true
     shareFacebook = true
@@ -78,5 +72,10 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [[menu.main]]
     name = "CV"
+    url = "/files/cv.pdf"
+    weight = 100
+    
+[[menu.main]]
+    name = "MA376 Course Notes"
     url = "/files/cv.pdf"
     weight = 100
