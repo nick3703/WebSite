@@ -18,7 +18,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     useSessionStorage = false
 
 [Author]
-    name = "My Name"
+    name = "Clark"
     profile = "https://google.com/+XXX"
 
 [Taxonomies]
