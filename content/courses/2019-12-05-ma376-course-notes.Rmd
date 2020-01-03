@@ -1,5 +1,5 @@
 ---
-title: ERCA-II Slides
+title: MA376-Notes
 author: "Nicholas J. Clark"
 date: '2019-12-04'
 slug: testpost
@@ -14,10 +14,6 @@ description: ''
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE)
 library(tidyverse)
-```
-
-```{r,echo=FALSE}
-knitr::include_url("https://gallant-ritchie-afafb4.netlify.com/slides/IPR.html")
 ```
 
 
