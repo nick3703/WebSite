@@ -11,3 +11,8 @@ description: ''
 Welcome to MA376!  Prior to class please ensure you have a \textbf{working} version of R [Available Here](https://www.r-project.org/) and R Studio, [Available Here](https://rstudio.com/products/rstudio/).  THe majority of this course will be conducted in R, but if you want to use Python, there's nothing stopping you!
 
 In R Studio run `library(tidyverse)`  If you get an error, you need to install the package via `install.packages("tidyverse")`.  If you need a referesher on `tidyverse`, I'd highly recommend [R4DS](https://r4ds.had.co.nz/).
+
+
+The textbook for this course is [Intermediate Statistical Investigations](http://www.isi-stats.com/) which can be purchased through the bookstore.  We will also be doing explorations from the textbook which involve the data sets located at [http://www.isi-stats.com/isi2/applets.html](http://www.isi-stats.com/isi2/applets.html).
+
+Please read the course website and the course calendar at [https://www.nicholasjsclark.com/courses/testpost/](https://www.nicholasjsclark.com/courses/testpost/) or through clicking the link at the top of this page.
