@@ -1,5 +1,5 @@
 ---
-title: MA376 Course Notes
+title: "MA376 Course Notes"
 author: Nicholas J. Clark
 date: '2019-12-05'
 slug: ma376-course-notes
