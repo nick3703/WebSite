@@ -1,6 +1,6 @@
 ---
 title: "MA376 Course Notes"
-author: Nicholas J. Clark
+author: "Nicholas J. Clark"
 date: '2019-12-05'
 slug: ma376-course-notes
 categories:
@@ -10,6 +10,10 @@ tags:
 description: ''
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+library(tidyverse)
+```
 
 [Course Memo](https://gallant-ritchie-afafb4.netlify.com/files/CourseNotes/Instructional Memorandum Ma376 20-2 Draft.pdf)
 
