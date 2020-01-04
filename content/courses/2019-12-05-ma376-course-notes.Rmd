@@ -27,6 +27,10 @@ library(tidyverse)
 
 [Lesson 2 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn_2_376.Rmd)
 
-[Lesson 3](https://gallant-ritchie-afafb4.netlify.com/files/CourseNotes/Lsn_3.pdf)
+[Lesson 3](https://github.com/nick3703/MA376/blob/master/Lsn_3.pdf)
 
-[Lesson 4](https://gallant-ritchie-afafb4.netlify.com/files/CourseNotes/Lsn_4.pdf)
+[Lesson 3 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn_3.Rmd)
+
+[Lesson 4](https://github.com/nick3703/MA376/blob/master/Lsn_4.pdf)
+
+[Lesson 4 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn_4.Rmd)
