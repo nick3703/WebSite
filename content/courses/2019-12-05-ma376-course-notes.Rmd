@@ -21,7 +21,11 @@ library(tidyverse)
 
 [Lesson 1](https://gallant-ritchie-afafb4.netlify.com/files/CourseNotes/Lsn_1.pdf)
 
+[Lesson 1 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn%201.Rmd)
+
 [Lesson 2](https://gallant-ritchie-afafb4.netlify.com/files/CourseNotes/Lsn_2_376.pdf)
+
+[Lesson 2 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn_2_376.Rmd)
 
 [Lesson 3](https://gallant-ritchie-afafb4.netlify.com/files/CourseNotes/Lsn_3.pdf)
 
