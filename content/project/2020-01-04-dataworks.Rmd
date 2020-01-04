@@ -9,11 +9,5 @@ categories: ["R"]
 ---
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(collapse = TRUE)
-library(tidyverse)
-```
 
-```{r,echo=FALSE}
-knitr::include_url("https://gallant-ritchie-afafb4.netlify.com/files/ClarkDATAWorks.pdf")
-```
+[Slides From DataWorks 2019](https://gallant-ritchie-afafb4.netlify.com/files/ClarkDATAWorks.pdf)
