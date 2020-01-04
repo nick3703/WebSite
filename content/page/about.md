@@ -10,4 +10,4 @@ I am currently serving as an Assistant Professor at the United States Military A
 
 ## School
 
-I graduated from West Point in 2002 with a BS in Mathematics, I then received an MS in Statistics from George Mason in 2010 and a PhD in Statistics from Iowa State in 2017.  I currently teach Applied Statistics mostly to Junior Mathematics, Operations Research, and Data Science Majors.
+I graduated from West Point in 2002 with a BS in Mathematics, I then received an MS in Statistics from George Mason in 2010 and a PhD in Statistics from Iowa State in 2017.  I currently teach Applied Statistics mostly to Mathematics, Operations Research, and Data Science Majors.
