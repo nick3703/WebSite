@@ -19,7 +19,7 @@ library(tidyverse)
 
 [Course Calendar](https://gallant-ritchie-afafb4.netlify.com/files/CourseNotes/MA376 Syllabus 20-2.pdf)
 
-[Lesson 1](https://github.com/nick3703/MA376/blob/master/Lsn_1.pdf)
+[Lesson 1](https://github.com/nick3703/MA376/blob/master/Lsn-1.pdf)
 
 [Lesson 1 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn%201.Rmd)
 
