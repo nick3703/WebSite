@@ -28,7 +28,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     mainSections = ["post"]
     intro = true
     headline = "Nicholas J Clark"
-    description = "Statistics and Data Science Projects"
+    description = "Statistics and Data Science Lesson Notes and Projects"
     linkedin = "https://www.linkedin.com/in/nicholas-clark-4a822513a/"
     email = "nicholas.clark@westpoint.edu"
     opengraph = true
@@ -43,7 +43,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     exponeaTarget = ""
     exponeaToken = ""
     exponeaTrackVisits = false
-    readingTime = true
+    readingTime = false
     readingTimeText = "Estimated reading time:"
     author = "Nicholas Clark"
 

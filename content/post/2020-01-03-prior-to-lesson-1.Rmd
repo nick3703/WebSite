@@ -16,3 +16,14 @@ In R Studio run `library(tidyverse)`  If you get an error, you need to install t
 The textbook for this course is [Intermediate Statistical Investigations](http://www.isi-stats.com/) which can be purchased through the bookstore.  We will also be doing explorations from the textbook which involve the data sets located at [http://www.isi-stats.com/isi2/applets.html](http://www.isi-stats.com/isi2/applets.html).
 
 Please read the course website and the course calendar at [https://www.nicholasjsclark.com/courses/testpost/](https://www.nicholasjsclark.com/courses/testpost/) or through clicking the link at the top of this page.
+
+In this course we will be working through a variety of statistical explorations.  My expectation is that you complete the assignment using Rmarkdown preferably knit to pdf.  If you have issues knitting to pdf the first thing to do is ensure you have MikTex installed.  One resource for setting this up is at [This Website](https://medium.com/@sorenlind/create-pdf-reports-using-r-r-markdown-latex-and-knitr-on-windows-10-952b0c48bfa9).  If you continue to have problems knitting to pdf you may have to follow the follwing steps (credit to Timesaver from [this issue](https://community.rstudio.com/t/rmarkdown-knit-pdf-issues/10102/7):
+
+\begin{itemize}
+\item Start MikTex console
+\item Click on ``Restart as Adminstrator"
+\item Then choose ``Always install missing packages on the fly"
+\item Close the console
+\item Restart RStudio
+\end{itemize}
+
