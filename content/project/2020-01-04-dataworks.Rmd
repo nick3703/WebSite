@@ -3,7 +3,7 @@ title: "DataWorks Presentation"
 author: "Nicholas J. Clark"
 date: '2020-01-04'
 description: ''
-slug: testpost
+slug: dwpresentation
 tags: ["RMarkdown"]
 categories: ["R"]
 ---
