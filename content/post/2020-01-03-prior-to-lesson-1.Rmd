@@ -21,8 +21,8 @@ In this course we will be working through a variety of statistical explorations.
 
 
 1. Start MikTex console
-2. Click on ``Restart as Adminstrator"
-3. Then choose ``Always install missing packages on the fly"
+2. Click on "Restart as Adminstrator"
+3. Then choose "Always install missing packages on the fly"
 4. Close the console
 5. Restart RStudio
 
