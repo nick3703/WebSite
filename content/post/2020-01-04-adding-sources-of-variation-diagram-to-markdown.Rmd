@@ -1,0 +1,23 @@
+---
+title: "Adding Sources of Variation Diagram to Markdown"
+author: "Nicholas J. Clark"
+date: '2020-01-04'
+description: ''
+slug: adding-sources-of-variation-diagram-to-markdown
+tags: []
+categories: []
+---
+
+There's a couple of ways you could do this, one way would be to run:
+
+```{r}
+library(kableExtra)
+library(knitr)
+sv.diagram<-data.frame(response="My Response",explained_variation="My Explained Variation",unexplained_variation="Thing 1, Thing 2, Thing 3")
+x <- knitr::kable(sv.diagram, "html")
+column_spec(x, 1:3, width = "20em")
+```
+
+
+\vspace{.5in}
+One thing to change when you do this in your markdown file is you would want to do `knitr::kable(sv.diagram, "latex")` as opposed to `html`.  You can also play around with the `width` option in `column_spec()`

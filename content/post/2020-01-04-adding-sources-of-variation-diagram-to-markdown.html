@@ -1,0 +1,49 @@
+---
+title: "Adding Sources of Variation Diagram to Markdown"
+author: "Nicholas J. Clark"
+date: '2020-01-04'
+description: ''
+slug: adding-sources-of-variation-diagram-to-markdown
+tags: []
+categories: []
+---
+
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<p>There’s a couple of ways you could do this, one way would be to run:</p>
+<pre class="r"><code>library(kableExtra)
+library(knitr)
+sv.diagram&lt;-data.frame(response=&quot;My Response&quot;,explained_variation=&quot;My Explained Variation&quot;,unexplained_variation=&quot;Thing 1, Thing 2, Thing 3&quot;)
+x &lt;- knitr::kable(sv.diagram, &quot;html&quot;)
+column_spec(x, 1:3, width = &quot;20em&quot;)</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+response
+</th>
+<th style="text-align:left;">
+explained_variation
+</th>
+<th style="text-align:left;">
+unexplained_variation
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;width: 20em; ">
+My Response
+</td>
+<td style="text-align:left;width: 20em; ">
+My Explained Variation
+</td>
+<td style="text-align:left;width: 20em; ">
+Thing 1, Thing 2, Thing 3
+</td>
+</tr>
+</tbody>
+</table>
+
+<p>One thing to change when you do this in your markdown file is you would want to do <code>knitr::kable(sv.diagram, "latex")</code> as opposed to <code>html</code>. You can also play around with the <code>width</code> option in <code>column_spec()</code></p>
