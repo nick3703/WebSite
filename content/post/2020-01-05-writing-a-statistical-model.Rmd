@@ -1,0 +1,58 @@
+---
+title: "Writing A Statistical Model"
+author: "Nicholas J. Clark"
+date: '2020-01-05'
+description: ''
+slug: writing-a-statistical-model
+tags: []
+categories: []
+---
+
+This should be a review from MA206/MA206Y but to put us all on the same page, throughout this course we will ask you to write a statistical model. To show you how this is properly done let's consider the example of exploring the relationship between height and weight for students in our classroom.  To do this, let's suppose we measure each student in inches and then weigh each student in pounds.
+
+Perhaps our measurements are:
+
+```{r, message=FALSE}
+library(tidyverse)
+class.measurements<-data.frame(ht=c(67,72,60,75,63),wt=c(160,205,140,195,150))
+class.measurements %>% ggplot(aes(x=ht,y=wt))+geom_point(cex=2)
+```
+
+One model that relates height to weight would be:
+
+\begin{align}
+i &= \mbox{Student} \\
+x_{1,i} &= \mbox{Height of Student }i \\
+y_i &= \mbox{Weight of Student }i \\
+y_i &= \beta_0 + \beta_1 x_{1,i} + \epsilon_i
+\end{align}
+
+We may also then make the assumption that $\epsilon_i \sim N(0,\sigma)$ and that our $\epsilon_i$ terms are each independent of each other.  
+
+In this case we could then fit the model and conduct hypothesis tests on whether $\beta_0$ is 0 or whether $\beta_1=0$.  In R this is done through the `lm()` function:
+
+```{r}
+class.lm <- lm(wt~ht,data=class.measurements)
+summary(class.lm)
+```
+
+Our \textit{point estimates} for our parameters then are:
+
+\begin{align}
+\hat{\beta_0}&= -122.6\\
+\hat{\beta_1}&= 4.34
+\end{align}
+
+We also have an estimate of $\hat{\sigma}=11.01$.  From our output we could state that there is strong statistical evidence that $\beta_1$ is not zero.  Recall from our model that $\beta_1$ describes the change in weight as height changes by one unit.  Meaning we can statistically conclude that as we change height weight changes, which would match our intuition.
+
+The key points to analyzing a statistical model are:
+
+1. Define index, response variable, explanatory variable
+2. Write down statistical expression
+3. Write down assumptions on model
+4. Fit model and given point estimates
+5. Check assumptions (we did not do this here, in fact it would be quite hard with five data points)
+6. State conclusion
+
+
+

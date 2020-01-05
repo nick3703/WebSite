@@ -1,0 +1,62 @@
+---
+title: "Writing A Statistical Model"
+author: "Nicholas J. Clark"
+date: '2020-01-05'
+description: ''
+slug: writing-a-statistical-model
+tags: []
+categories: []
+---
+
+
+
+<p>This should be a review from MA206/MA206Y but to put us all on the same page, throughout this course we will ask you to write a statistical model. To show you how this is properly done let’s consider the example of exploring the relationship between height and weight for students in our classroom. To do this, let’s suppose we measure each student in inches and then weigh each student in pounds.</p>
+<p>Perhaps our measurements are:</p>
+<pre class="r"><code>library(tidyverse)
+class.measurements&lt;-data.frame(ht=c(67,72,60,75,63),wt=c(160,205,140,195,150))
+class.measurements %&gt;% ggplot(aes(x=ht,y=wt))+geom_point(cex=2)</code></pre>
+<p><img src="/post/2020-01-05-writing-a-statistical-model_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>One model that relates height to weight would be:</p>
+<p><span class="math display">\[\begin{align}
+i &amp;= \mbox{Student} \\
+x_{1,i} &amp;= \mbox{Height of Student }i \\
+y_i &amp;= \mbox{Weight of Student }i \\
+y_i &amp;= \beta_0 + \beta_1 x_{1,i} + \epsilon_i
+\end{align}\]</span></p>
+<p>We may also then make the assumption that <span class="math inline">\(\epsilon_i \sim N(0,\sigma)\)</span> and that our <span class="math inline">\(\epsilon_i\)</span> terms are each independent of each other.</p>
+<p>In this case we could then fit the model and conduct hypothesis tests on whether <span class="math inline">\(\beta_0\)</span> is 0 or whether <span class="math inline">\(\beta_1=0\)</span>. In R this is done through the <code>lm()</code> function:</p>
+<pre class="r"><code>class.lm &lt;- lm(wt~ht,data=class.measurements)
+summary(class.lm)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = wt ~ ht, data = class.measurements)
+## 
+## Residuals:
+##       1       2       3       4       5 
+## -8.2637 15.0326  2.1214 -7.9896 -0.9008 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept) -122.5653    60.1354  -2.038   0.1343  
+## ht             4.3407     0.8892   4.881   0.0164 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 11.01 on 3 degrees of freedom
+## Multiple R-squared:  0.8882, Adjusted R-squared:  0.8509 
+## F-statistic: 23.83 on 1 and 3 DF,  p-value: 0.01644</code></pre>
+<p>Our  for our parameters then are:</p>
+<p><span class="math display">\[\begin{align}
+\hat{\beta_0}&amp;= -122.6\\
+\hat{\beta_1}&amp;= 4.34
+\end{align}\]</span></p>
+<p>We also have an estimate of <span class="math inline">\(\hat{\sigma}=11.01\)</span>. From our output we could state that there is strong statistical evidence that <span class="math inline">\(\beta_1\)</span> is not zero. Recall from our model that <span class="math inline">\(\beta_1\)</span> describes the change in weight as height changes by one unit. Meaning we can statistically conclude that as we change height weight changes, which would match our intuition.</p>
+<p>The key points to analyzing a statistical model are:</p>
+<ol style="list-style-type: decimal">
+<li>Define index, response variable, explanatory variable</li>
+<li>Write down statistical expression</li>
+<li>Write down assumptions on model</li>
+<li>Fit model and given point estimates</li>
+<li>Check assumptions (we did not do this here, in fact it would be quite hard with five data points)</li>
+<li>State conclusion</li>
+</ol>
