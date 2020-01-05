@@ -21,10 +21,10 @@ class.measurements %>% ggplot(aes(x=ht,y=wt))+geom_point(cex=2)
 One model that relates height to weight would be:
 
 \begin{align}
-i &= \mbox{Student} \\
-x_{1,i} &= \mbox{Height of Student }i \\
-y_i &= \mbox{Weight of Student }i \\
-y_i &= \beta_0 + \beta_1 x_{1,i} + \epsilon_i
+& i = \mbox{Student} \\
+& x_{1,i} = \mbox{Height of Student }i \\
+& y_i = \mbox{Weight of Student }i \\
+& y_i = \beta_0 + \beta_1 x_{1,i} + \epsilon_i
 \end{align}
 
 We may also then make the assumption that $\epsilon_i \sim N(0,\sigma)$ and that our $\epsilon_i$ terms are each independent of each other.  
