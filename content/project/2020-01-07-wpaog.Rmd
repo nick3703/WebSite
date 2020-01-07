@@ -1,0 +1,19 @@
+---
+title: "Data Science Talk at WPAOG"
+author: "Nicholas J. Clark"
+date: '2019-12-04'
+description: ''
+slug: aogtalk
+tags: ["talks"]
+categories: ["data science"]
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+library(tidyverse)
+```
+
+```{r,echo=FALSE}
+knitr::include_url("https://gallant-ritchie-afafb4.netlify.com/aogslides/Presentation.html")
+```
