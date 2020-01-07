@@ -1,0 +1,26 @@
+---
+title: MA476-Notes
+author: "Nicholas J. Clark"
+date: '2019-12-04'
+categories: ["R"]
+tags: ["RMarkdown"]
+description: ''
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+library(tidyverse)
+```
+
+
+Notes from MA476 (Mathematical Statistics) can be found on my GitHub repo located at:
+
+
+
+
+[MA476Notes](https://github.com/nick3703/MA476)
+
+
+I offer no guarantee that there aren't mistakes in these notes...  They generally follow the course text, \textit{Mathematical Statistics with Applications, 7th ed} by Wackerly, Mendehall, and Scheaffer
+

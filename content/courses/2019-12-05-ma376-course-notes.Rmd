@@ -15,6 +15,8 @@ library(tidyverse)
 ```
 
 
+
+
 [Course Memo](https://www.nicholasjsclark.com/files/CourseNotes/Instructional Memorandum Ma376 20-2 Draft.pdf)
 
 [Course Calendar](https://www.nicholasjsclark.com/files/CourseNotes/MA376 Syllabus 20-2.pdf)
