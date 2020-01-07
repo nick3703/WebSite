@@ -14,8 +14,13 @@ knitr::opts_chunk$set(collapse = TRUE,out.width="100%")
 library(tidyverse)
 ```
 
+On November 20th I gave an invited talk to the West Point Association of Graduates on how they could apply Data Science to their organization.  The main point I wanted to address is, much like statistics, data science is really only relevant when you have a question that data science can answer...  Without a properly formulated question, you are just blindly throwing darts and hoping there's a dart board in your vicinity.
+
+
+Below are the slides I used:
+
+
 ```{r,echo=FALSE}
 knitr::include_url("https://gallant-ritchie-afafb4.netlify.com/aogslides/Presentation.html", height = "600px")
 ```
 
-Above are slides from a talk I gave to the West Point Association of Graduates on 20 November at Herbert Hall
