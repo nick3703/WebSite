@@ -5,6 +5,8 @@ description: Things about me.
 title: About
 ---
 
+Please note that all content on this website reflect my own personnal opinions and in no way necessarily express the views of the Department of Defense
+
 ## About
 I am currently serving as an Assistant Professor at the United States Military Academy.  I helped set up and establish the Applied Statistics and Data Science degree and am now the head of the Center for Data Analysis and Statistics.
 
