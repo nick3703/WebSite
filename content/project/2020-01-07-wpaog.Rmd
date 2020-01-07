@@ -1,7 +1,7 @@
 ---
 title: "Data Science Talk at WPAOG"
 author: "Nicholas J. Clark"
-date: '2019-12-04'
+date: '2019-11-20'
 description: ''
 slug: aogtalk
 tags: ["talks"]
@@ -10,10 +10,12 @@ categories: ["data science"]
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(collapse = TRUE)
+knitr::opts_chunk$set(collapse = TRUE,out.width="100%")
 library(tidyverse)
 ```
 
 ```{r,echo=FALSE}
-knitr::include_url("https://gallant-ritchie-afafb4.netlify.com/aogslides/Presentation.html")
+knitr::include_url("https://gallant-ritchie-afafb4.netlify.com/aogslides/Presentation.html", height = "600px")
 ```
+
+Above are slides from a talk I gave to the West Point Association of Graduates on 20 November at Herbert Hall
