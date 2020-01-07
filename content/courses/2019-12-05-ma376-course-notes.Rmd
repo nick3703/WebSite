@@ -15,9 +15,9 @@ library(tidyverse)
 ```
 
 
-[Course Memo](https://gallant-ritchie-afafb4.netlify.com/files/CourseNotes/Instructional Memorandum Ma376 20-2 Draft.pdf)
+[Course Memo](https://www.nicholasjsclark.com/files/CourseNotes/Instructional Memorandum Ma376 20-2 Draft.pdf)
 
-[Course Calendar](https://gallant-ritchie-afafb4.netlify.com/files/CourseNotes/MA376 Syllabus 20-2.pdf)
+[Course Calendar](https://www.nicholasjsclark.com/files/CourseNotes/MA376 Syllabus 20-2.pdf)
 
 [Lesson 1](https://github.com/nick3703/MA376/blob/master/Lsn-1.pdf)
 
