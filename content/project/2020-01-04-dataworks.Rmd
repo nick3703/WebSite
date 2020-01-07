@@ -9,5 +9,7 @@ categories: ["R"]
 ---
 
 
+In 2019 I gave an invited talk at the [DATAWorks conference](https://dataworks.testscience.org/) on how we educate future Army leaders in data science and statistics.  I discussed the new Applied Statistics and Data Science major as well as innovations in teaching introductory statistics.  Slides are below. 
+
 
 [Slides From DataWorks 2019](https://gallant-ritchie-afafb4.netlify.com/files/ClarkDATAWorks.pdf)
