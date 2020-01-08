@@ -25,6 +25,10 @@ library(tidyverse)
 
 [Lesson 1 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn%201.Rmd)
 
+[An Example Exploration](https://github.com/nick3703/MA376/blob/master/Example_Exploration.pdf)
+
+[Rmd for Example Exploration](https://github.com/nick3703/MA376/blob/master/Example_Exploration.Rmd)
+
 [Lesson 2](https://github.com/nick3703/MA376/blob/master/Lsn_2_376.pdf)
 
 [Lesson 2 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn_2_376.Rmd)
