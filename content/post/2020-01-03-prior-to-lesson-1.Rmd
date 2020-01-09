@@ -26,3 +26,7 @@ In this course we will be working through a variety of statistical explorations.
 4. Close the console
 5. Restart RStudio
 
+
+## Update
+
+One of your classmates was here working through knitting to pdf, we ran `tinytex::install_tinytex()` and restarted Rstudio and it seemed to work.  If you still cannot get knit after following steps 1-5 above go ahead and try that.  If it still doesn't seem to work let me know.
