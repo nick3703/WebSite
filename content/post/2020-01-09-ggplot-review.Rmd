@@ -1,0 +1,92 @@
+---
+title: ggplot2 Review
+author: Nicholas J. Clark
+date: '2020-01-09'
+slug: ggplot-review
+categories:
+  - R
+tags: []
+description: ''
+---
+
+
+In MA206 you were introduced to `ggplot()` which is part of the tidyverse.  Below is a review of what you should remember about using this function.  The first point to remember is that it is not part of base R meaning you need to call `library(tidyverse)` (preferably), or `library(ggplot2)` in order to use the function.  Often I use ggplot with other dplyr functions such as `%>%`.  
+
+For instance let's consider the Motor Trend Car Road Tests dataset which is part of base R.  In order to use the dataset we first run
+
+```{r,message=FALSE,warning=FALSE}
+library(tidyverse)
+data(mtcars)
+```
+
+If we look at our Environment tab we see we now have an object called `mtcars` in our memory.  We can examine the structure of `mtcars` by running
+
+```{r}
+str(mtcars)
+```
+
+We could also run `glimpse()` from tidyverse, which is slighly cleaner and more correct in their definitions of the data structures, but perhaps annoyingly it doesn't tell us that `mtcars` is a `data.frame` though that can easily be guessed by the output of `mtcars`.  
+
+As we have our data in a data.frame it is in the correct format to be passed to `ggplot()`.  This is done through two seperate statements.  The first `ggplot(aes(x=,y=))` sets up the aesthetics of our plot.  We define what we \textit{mean} by $x$ and what we \textit{mean} by $y$.  This function in of itself doesn't show anything, but is necessary to that `ggplot()` knows what we want to do.  This looks like:
+
+Say we are interested in examining whether horse power has a relationship with mpg.  In this case we might set $x$ equal to hp and $y$ equal to mpg.
+
+```{r}
+mtcars %>% ggplot(aes(x=hp,y=mpg))
+```
+
+Note that when we do this we haven't actually plotted anything, rather we have just set up the plot \textit{in order to plot}.  Next we stipulate what we want to show on this plot.  For instance we might want to represent each of our observational units as points.  In this case we would want to use `geom_point()`
+
+```{r}
+mtcars %>% ggplot(aes(x=hp,y=mpg))+geom_point()
+```
+
+It would kind of be nice if we could use the `%>%` operator to add the `geom_point` layer, but it doesn't.  (For more on this see Hadley Wickham's response to [this question](https://community.rstudio.com/t/why-cant-ggplot2-use/4372/7)).  
+
+Note that there are other aesthetics we could pass, for instance we could color by cylinder
+
+
+```{r}
+mtcars %>% ggplot(aes(x=hp,y=mpg,color=cyl))+geom_point()
+```
+
+Though perhaps this is less than satisfying because here we are treating cylinder as a continuous variable and perhaps it would be better to think of it as a factor.  To correct this we can create a new variable and color by it:
+
+```{r}
+mtcars.mod<-mtcars %>% mutate(cyl.fac=as.factor(cyl))
+mtcars.mod %>% ggplot(aes(x=hp,y=mpg,color=cyl.fac))+geom_point()
+```
+
+We can add labels via 
+
+```{r}
+mtcars.mod %>% ggplot(aes(x=hp,y=mpg,color=cyl.fac))+geom_point()+
+  labs(x="Horse Power",y="Miles Per Gallon",color="Number of Cylinders",title="Our Plot")
+```
+
+If you don't like the background, we can change the theme using one of the themes from [here](https://ggplot2.tidyverse.org/reference/ggtheme.html)
+
+```{r}
+mtcars.mod %>% ggplot(aes(x=hp,y=mpg,color=cyl.fac))+geom_point()+
+  labs(x="Horse Power",y="Miles Per Gallon",color="Number of Cylinders",title="Our Plot")+
+  theme_classic()
+```
+
+If we want to make our points bigger we need to modify the arguements inside of `geom_point()`
+
+```{r}
+mtcars.mod %>% ggplot(aes(x=hp,y=mpg,color=cyl.fac))+geom_point(size=4)+
+  labs(x="Horse Power",y="Miles Per Gallon",color="Number of Cylinders",title="Our Plot")+
+  theme_classic()
+```
+
+
+
+If instead of doing points we wanted to do side by side boxplots for the number of Cylinders we would need to change our $x$ to be a factor and then use `geom_boxplot()`.  For instance:
+
+```{r}
+mtcars.mod %>% ggplot(aes(x=cyl.fac,y=mpg))+geom_boxplot()
+```
+
+
+There's a ton of other functionality inside of `ggplot()` and I highly encourage you to do outside research.  A nice cheatsheet is located [here](https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)

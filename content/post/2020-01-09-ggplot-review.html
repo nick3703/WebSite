@@ -1,0 +1,65 @@
+---
+title: ggplot2 Review
+author: Nicholas J. Clark
+date: '2020-01-09'
+slug: ggplot-review
+categories:
+  - R
+tags: []
+description: ''
+---
+
+
+
+<p>In MA206 you were introduced to <code>ggplot()</code> which is part of the tidyverse. Below is a review of what you should remember about using this function. The first point to remember is that it is not part of base R meaning you need to call <code>library(tidyverse)</code> (preferably), or <code>library(ggplot2)</code> in order to use the function. Often I use ggplot with other dplyr functions such as <code>%&gt;%</code>.</p>
+<p>For instance let’s consider the Motor Trend Car Road Tests dataset which is part of base R. In order to use the dataset we first run</p>
+<pre class="r"><code>library(tidyverse)
+data(mtcars)</code></pre>
+<p>If we look at our Environment tab we see we now have an object called <code>mtcars</code> in our memory. We can examine the structure of <code>mtcars</code> by running</p>
+<pre class="r"><code>str(mtcars)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    32 obs. of  11 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
+##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...</code></pre>
+<p>We could also run <code>glimpse()</code> from tidyverse, which is slighly cleaner and more correct in their definitions of the data structures, but perhaps annoyingly it doesn’t tell us that <code>mtcars</code> is a <code>data.frame</code> though that can easily be guessed by the output of <code>mtcars</code>.</p>
+<p>As we have our data in a data.frame it is in the correct format to be passed to <code>ggplot()</code>. This is done through two seperate statements. The first <code>ggplot(aes(x=,y=))</code> sets up the aesthetics of our plot. We define what we  by <span class="math inline">\(x\)</span> and what we  by <span class="math inline">\(y\)</span>. This function in of itself doesn’t show anything, but is necessary to that <code>ggplot()</code> knows what we want to do. This looks like:</p>
+<p>Say we are interested in examining whether horse power has a relationship with mpg. In this case we might set <span class="math inline">\(x\)</span> equal to hp and <span class="math inline">\(y\)</span> equal to mpg.</p>
+<pre class="r"><code>mtcars %&gt;% ggplot(aes(x=hp,y=mpg))</code></pre>
+<p><img src="/post/2020-01-09-ggplot-review_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Note that when we do this we haven’t actually plotted anything, rather we have just set up the plot . Next we stipulate what we want to show on this plot. For instance we might want to represent each of our observational units as points. In this case we would want to use <code>geom_point()</code></p>
+<pre class="r"><code>mtcars %&gt;% ggplot(aes(x=hp,y=mpg))+geom_point()</code></pre>
+<p><img src="/post/2020-01-09-ggplot-review_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>It would kind of be nice if we could use the <code>%&gt;%</code> operator to add the <code>geom_point</code> layer, but it doesn’t. (For more on this see Hadley Wickham’s response to <a href="https://community.rstudio.com/t/why-cant-ggplot2-use/4372/7">this question</a>).</p>
+<p>Note that there are other aesthetics we could pass, for instance we could color by cylinder</p>
+<pre class="r"><code>mtcars %&gt;% ggplot(aes(x=hp,y=mpg,color=cyl))+geom_point()</code></pre>
+<p><img src="/post/2020-01-09-ggplot-review_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Though perhaps this is less than satisfying because here we are treating cylinder as a continuous variable and perhaps it would be better to think of it as a factor. To correct this we can create a new variable and color by it:</p>
+<pre class="r"><code>mtcars.mod&lt;-mtcars %&gt;% mutate(cyl.fac=as.factor(cyl))
+mtcars.mod %&gt;% ggplot(aes(x=hp,y=mpg,color=cyl.fac))+geom_point()</code></pre>
+<p><img src="/post/2020-01-09-ggplot-review_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>We can add labels via</p>
+<pre class="r"><code>mtcars.mod %&gt;% ggplot(aes(x=hp,y=mpg,color=cyl.fac))+geom_point()+
+  labs(x=&quot;Horse Power&quot;,y=&quot;Miles Per Gallon&quot;,color=&quot;Number of Cylinders&quot;,title=&quot;Our Plot&quot;)</code></pre>
+<p><img src="/post/2020-01-09-ggplot-review_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>If you don’t like the background, we can change the theme using one of the themes from <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">here</a></p>
+<pre class="r"><code>mtcars.mod %&gt;% ggplot(aes(x=hp,y=mpg,color=cyl.fac))+geom_point()+
+  labs(x=&quot;Horse Power&quot;,y=&quot;Miles Per Gallon&quot;,color=&quot;Number of Cylinders&quot;,title=&quot;Our Plot&quot;)+
+  theme_classic()</code></pre>
+<p><img src="/post/2020-01-09-ggplot-review_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>If we want to make our points bigger we need to modify the arguements inside of <code>geom_point()</code></p>
+<pre class="r"><code>mtcars.mod %&gt;% ggplot(aes(x=hp,y=mpg,color=cyl.fac))+geom_point(size=4)+
+  labs(x=&quot;Horse Power&quot;,y=&quot;Miles Per Gallon&quot;,color=&quot;Number of Cylinders&quot;,title=&quot;Our Plot&quot;)+
+  theme_classic()</code></pre>
+<p><img src="/post/2020-01-09-ggplot-review_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>If instead of doing points we wanted to do side by side boxplots for the number of Cylinders we would need to change our <span class="math inline">\(x\)</span> to be a factor and then use <code>geom_boxplot()</code>. For instance:</p>
+<pre class="r"><code>mtcars.mod %&gt;% ggplot(aes(x=cyl.fac,y=mpg))+geom_boxplot()</code></pre>
+<p><img src="/post/2020-01-09-ggplot-review_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>There’s a ton of other functionality inside of <code>ggplot()</code> and I highly encourage you to do outside research. A nice cheatsheet is located <a href="https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf">here</a></p>
