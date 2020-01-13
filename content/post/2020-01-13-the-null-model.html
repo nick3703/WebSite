@@ -1,0 +1,61 @@
+---
+title: The Null Model
+author: Nicholas J. Clark
+date: '2020-01-13'
+slug: the-null-model
+categories:
+  - Linear Model
+tags: []
+description: ''
+---
+
+
+
+<p>In class I sometimes talk about the null model for regression or ANOVA. The null model, also called the single means model in our text, is synonymous with the intercept only model in regression. In terms of explaining variability, the null model assumes that we cannot measure anything of use that explains a sufficient amount of our variability. For example, our text talks about housing prices in Michigan, which we can read in via</p>
+<pre class="r"><code>library(tidyverse)
+mich.house.price&lt;-read.table(&quot;http://www.isi-stats.com/isi2/data/homeprices.txt&quot;,header=T)</code></pre>
+<p>The single means model for this data could be written as:</p>
+<p><span class="math display">\[\begin{align*}
+i &amp;= \mbox{House}\\
+y_i &amp; = \mbox{Price of House }i\\
+y_i &amp; = \beta_0 + \epsilon_i\\
+\epsilon \sim (0,\sigma)
+\end{align*}\]</span></p>
+<p>Note here I’m not necessarily assuming a distribution for <span class="math inline">\(\epsilon\)</span> but am saying that <span class="math inline">\(\epsilon_i\)</span> has expectation 0 and constant standard deviation. Oftentimes in the course we will assume Normality, but unless we’re forming confidence intervals or conducting a test we don’t need to.</p>
+<p>Note here that we are assuming that, for all houses, <span class="math inline">\(E[y_i]=\beta_0\)</span>. We can estimate <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\sigma\)</span> quite simply via</p>
+<pre class="r"><code>mich.house.price %&gt;% summarize(beta.hat=mean(price.1000),sigma.hat=sd(price.1000))</code></pre>
+<pre><code>##   beta.hat sigma.hat
+## 1 408.0615  240.9228</code></pre>
+<p>We could also do this in R via the <code>lm()</code> function</p>
+<pre class="r"><code>null.lm&lt;-lm(price.1000~1,data=mich.house.price)
+summary(null.lm)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = price.1000 ~ 1, data = mich.house.price)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -289.06 -198.06  -83.16  121.84  489.94 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   408.06      66.82   6.107 5.28e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 240.9 on 12 degrees of freedom</code></pre>
+<p>And we note that our residual standard error is an estimate of <span class="math inline">\(\hat{\sigma}\)</span> and in this case <span class="math inline">\(\hat{\beta_0}=\bar{y}\)</span>. We can extract our residuals by <span class="math inline">\(y_i-\hat{y_i}\)</span> this can be done either calculating</p>
+<pre class="r"><code>resids&lt;-mich.house.price$price.1000-mean(mich.house.price$price.1000)
+resids</code></pre>
+<pre><code>##  [1]  231.838462  489.938462    1.938462  121.838462   86.938462  341.838462
+##  [7] -208.161538  -83.161538 -289.061538  -98.161538 -228.161538 -198.061538
+## [13] -169.561538</code></pre>
+<p>Or by:</p>
+<pre class="r"><code>null.lm$residuals</code></pre>
+<pre><code>##           1           2           3           4           5           6 
+##  231.838462  489.938462    1.938462  121.838462   86.938462  341.838462 
+##           7           8           9          10          11          12 
+## -208.161538  -83.161538 -289.061538  -98.161538 -228.161538 -198.061538 
+##          13 
+## -169.561538</code></pre>
+<p>We can think of the null model as the worst we can possibly do. By using the null model we are essentially throwing our hands in the air and saying we can’t explain the variability in housing prices through any other explanatory variable. While this might seem silly, we have to assume this model is correct unless we can demonstrate that the variable we explain by adding an additional explanatory variable is worth the cost of a more complicated model.</p>

@@ -1,0 +1,57 @@
+---
+title: The Null Model
+author: Nicholas J. Clark
+date: '2020-01-13'
+slug: the-null-model
+categories:
+  - Linear Model
+tags: []
+description: ''
+---
+
+
+In class I sometimes talk about the null model for regression or ANOVA.  The null model, also called the single means model in our text, is synonymous with the intercept only model in regression.  In terms of explaining variability, the null model assumes that we cannot measure anything of use that explains a sufficient amount of our variability.  For example, our text talks about housing prices in Michigan, which we can read in via
+
+```{r,warning=FALSE,message=FALSE}
+library(tidyverse)
+mich.house.price<-read.table("http://www.isi-stats.com/isi2/data/homeprices.txt",header=T)
+```
+
+The single means model for this data could be written as:
+
+\begin{align*}
+i &= \mbox{House}\\
+y_i & = \mbox{Price of House }i\\
+y_i & = \beta_0 + \epsilon_i\\
+\epsilon \sim (0,\sigma)
+\end{align*}
+
+Note here I'm not necessarily assuming a distribution for $\epsilon$ but am saying that $\epsilon_i$ has expectation 0 and constant standard deviation.  Oftentimes in the course we will assume Normality, but unless we're forming confidence intervals or conducting a test we don't need to.
+
+Note here that we are assuming that, for all houses, $E[y_i]=\beta_0$.  We can estimate $\beta_0$ and $\sigma$ quite simply via
+
+```{r}
+mich.house.price %>% summarize(beta.hat=mean(price.1000),sigma.hat=sd(price.1000))
+```
+
+We could also do this in R via the `lm()` function
+
+```{r}
+null.lm<-lm(price.1000~1,data=mich.house.price)
+summary(null.lm)
+```
+
+And we note that our residual standard error is an estimate of $\hat{\sigma}$ and in this case $\hat{\beta_0}=\bar{y}$.  We can extract our residuals by $y_i-\hat{y_i}$ this can be done either calculating
+
+```{r}
+resids<-mich.house.price$price.1000-mean(mich.house.price$price.1000)
+resids
+```
+
+Or by:
+
+```{r}
+null.lm$residuals
+```
+
+We can think of the null model as the worst we can possibly do.  By using the null model we are essentially throwing our hands in the air and saying we can't explain the variability in housing prices through any other explanatory variable.  While this might seem silly, we have to assume this model is correct unless we can demonstrate that the variable we explain by adding an additional explanatory variable is worth the cost of a more complicated model.
