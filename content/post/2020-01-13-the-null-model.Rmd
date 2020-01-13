@@ -23,7 +23,7 @@ The single means model for this data could be written as:
 i &= \mbox{House}\\
 y_i & = \mbox{Price of House }i\\
 y_i & = \beta_0 + \epsilon_i\\
-\epsilon \sim (0,\sigma)
+\epsilon &\sim (0,\sigma)
 \end{align*}
 
 Note here I'm not necessarily assuming a distribution for $\epsilon$ but am saying that $\epsilon_i$ has expectation 0 and constant standard deviation.  Oftentimes in the course we will assume Normality, but unless we're forming confidence intervals or conducting a test we don't need to.

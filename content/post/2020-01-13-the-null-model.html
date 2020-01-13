@@ -19,7 +19,7 @@ mich.house.price&lt;-read.table(&quot;http://www.isi-stats.com/isi2/data/homepri
 i &amp;= \mbox{House}\\
 y_i &amp; = \mbox{Price of House }i\\
 y_i &amp; = \beta_0 + \epsilon_i\\
-\epsilon \sim (0,\sigma)
+\epsilon &amp;\sim (0,\sigma)
 \end{align*}\]</span></p>
 <p>Note here I’m not necessarily assuming a distribution for <span class="math inline">\(\epsilon\)</span> but am saying that <span class="math inline">\(\epsilon_i\)</span> has expectation 0 and constant standard deviation. Oftentimes in the course we will assume Normality, but unless we’re forming confidence intervals or conducting a test we don’t need to.</p>
 <p>Note here that we are assuming that, for all houses, <span class="math inline">\(E[y_i]=\beta_0\)</span>. We can estimate <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\sigma\)</span> quite simply via</p>
