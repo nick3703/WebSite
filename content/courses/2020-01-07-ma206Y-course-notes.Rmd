@@ -1,0 +1,25 @@
+---
+title: MA206Y-Notes
+author: "Nicholas J. Clark"
+date: '2019-12-04'
+categories: ["R"]
+tags: ["RMarkdown"]
+description: ''
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+library(tidyverse)
+```
+
+
+Notes from MA206Y (Introduction to Data Science) can be located at:
+
+
+
+
+[MA206YNotes](https://github.com/nick3703/MA206Y)
+
+
+I offer no guarantee that there aren't mistakes in these notes... The course is based on \textit{Introduction to Statistical Investigations} by Tintle et
