@@ -3,14 +3,14 @@ title: "The Bootstrap - What it is, what it isn't, what could go horribly wrong"
 author: "Nicholas J. Clark"
 date: '2019-11-20'
 description: ''
-slug: aogtalk
+slug: bstalk
 tags: ["talks"]
 categories: ["data science"]
 ---
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(collapse = TRUE,out.width="120%")
+knitr::opts_chunk$set(collapse = TRUE,out.width="150%")
 library(tidyverse)
 ```
 
