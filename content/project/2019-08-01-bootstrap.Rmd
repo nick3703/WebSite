@@ -1,0 +1,23 @@
+---
+title: "The Bootstrap - What it is, what it isn't, what could go horribly wrong"
+author: "Nicholas J. Clark"
+date: '2019-11-20'
+description: ''
+slug: aogtalk
+tags: ["talks"]
+categories: ["data science"]
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE,out.width="120%")
+library(tidyverse)
+```
+
+In September of 2019 I gave a departmental seminar on the Bootstrap.  We noticed that the majority of instructors were only familiar with the percentile bootstrap and often weren't familiar with the larger issues or theoretical development.  The talk was an attempt to expand the department's collective familiarity with the bootstrap and other modifications.
+
+
+```{r,echo=FALSE}
+knitr::include_url("https://gallant-ritchie-afafb4.netlify.com/bootstraptalk/Bootstrap.html", height = "800px")
+```
+
