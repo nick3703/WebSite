@@ -20,7 +20,7 @@ i&amp; = \mbox{1 if exposed to scent, 2 if not}\\
 j&amp; = \mbox{Student exposed to scent}\\
 y_{i,j}&amp; = \mbox{Rating given by student }i,j\\
 y_{i,j}&amp;= \mu_i + \epsilon_{i,j}\\
-\epsilon_{i,j}\sim iid(0,\sigma)
+\epsilon_{i,j}&amp;\sim iid(0,\sigma)
 \end{align*}\]</span></p>
 <p>Now, this certainly is not the only way to represent this model, we could also write:</p>
 <p><span class="math display">\[\begin{align*}
@@ -28,7 +28,7 @@ i&amp;=\mbox{Student}\\
 x_i&amp; = \mbox{1 if student i is exposed to scent, 0 otherwise}\\
 y_{i,j}&amp; = \mbox{Rating given by student }i\\
 y_{i,j}&amp;= \beta_0 + \beta_1 x_i + \epsilon_{i}\\
-\epsilon_{i}\sim iid(0,\sigma)
+\epsilon_{i}&amp;\sim iid(0,\sigma)
 \end{align*}\]</span></p>
 <p>Both of these models are explaining the same variability in the response, but if we want to compare the models to the null model we would need to test seperate sets of parameters.</p>
 <p>Under the first parameterization if <span class="math inline">\(\mu_1 = \mu_2\)</span> we are back at the null model and under the second parameterization if <span class="math inline">\(\beta_1=0\)</span> we are back at the null model.</p>
@@ -114,6 +114,7 @@ summary(reg.mult.mean)</code></pre>
 ## Residual standard error: 1.103 on 46 degrees of freedom
 ## Multiple R-squared:  0.2635, Adjusted R-squared:  0.2475 
 ## F-statistic: 16.46 on 1 and 46 DF,  p-value: 0.0001907</code></pre>
+<p>Note here that our estimate of our residual standard error is the exact same! This is not a mistake it is rather because, again, our two models we wrote above are the exact same. In fact, there’s an infinite number of ways to write the same model. When we write/fit the model though we must know what our parameters mean. Under the first parameterization our model parameters <span class="math inline">\(\mu_1\)</span> and <span class="math inline">\(\mu_2\)</span> represent the long run average of students exposed to scent <span class="math inline">\(\mu_1\)</span> or not exposed to scent, <span class="math inline">\(\mu_2\)</span>. Under the second formulation <span class="math inline">\(\beta_0\)</span> is the mean of group 1 whereas the mean of group 2 is <span class="math inline">\(\beta_0+\beta_1\)</span>. Therefore the meaning of <span class="math inline">\(\beta_1\)</span> is the difference between group 1 and grup 2.</p>
 <p>Finally, you may have noticed how this sort of feels like a two sample t-test. We can also use <code>t.test</code></p>
 <pre class="r"><code>t.mod&lt;-t.test(rating~condition,data=store.data,var.equal=TRUE)</code></pre>
 <p>Note here that we set <code>var.equal=TRUE</code> in order to ensure that we are using the model we stipulated and not a model that is assuming each of our groups have differing variances. From here we can extract an estimate of <span class="math inline">\(\hat{\mu}_1-\hat{\mu}_2\)</span> as well as conduct a formal test. In later classes we’ll discuss under what conditions this is valid and also find out how R is calculating the value of the t-statistic here.</p>
