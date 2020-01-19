@@ -1,0 +1,117 @@
+---
+title: The Two Means Model
+author: Nicholas J. Clark
+date: '2020-01-19'
+slug: the-two-means-model
+categories:
+  - Linear Model
+tags:
+  - Class
+description: ''
+---
+
+More often then not, the null model will be inadequate to explain the variation in our data.  The second simplest model that may explain variation in our data is the two means model.  This model would be appropriate if we can explain a significant amount of variation in our data through a factor that can take on two levels.
+
+One potential example is given in our text.  Here there was an experiment performed where students were either subjected to a (presumably pleasant) smell or not and asked to rate their shopping experience at a store.
+
+One way to write this model would be:
+
+\begin{align*}
+i& = \mbox{1 if exposed to scent, 2 if not}\\
+j& = \mbox{Student exposed to scent}\\
+y_{i,j}& = \mbox{Rating given by student }i,j\\
+y_{i,j}&= \mu_i + \epsilon_{i,j}\\
+\epsilon_{i,j}\sim iid(0,\sigma)
+\end{align*}
+
+Now, this certainly is not the only way to represent this model, we could also write:
+
+\begin{align*}
+i&=\mbox{Student}\\
+x_i& = \mbox{1 if student i is exposed to scent, 0 otherwise}\\
+y_{i,j}& = \mbox{Rating given by student }i\\
+y_{i,j}&= \beta_0 + \beta_1 x_i + \epsilon_{i}\\
+\epsilon_{i}\sim iid(0,\sigma)
+\end{align*}
+
+Both of these models are explaining the same variability in the response, but if we want to compare the models to the null model we would need to test seperate sets of parameters.
+
+Under the first parameterization if $\mu_1 = \mu_2$ we are back at the null model and under the second parameterization if $\beta_1=0$ we are back at the null model.
+
+In general, if we have a lot of factors, the first formulation is nice because it is more compact.
+
+In order to estimate the parameters of the first model we would estimate:
+
+\begin{align*}
+\hat{\mu_1}&=\frac{1}{n_1}\sum_{j=1}^{n_1} y_{1,j}\\
+\hat{\mu_2}&=\frac{1}{n_2}\sum_{j=1}^{n_2} y_{2,j}\\
+\end{align*}
+
+Where $n_1$ is the number of people in group 1 and $n_2$ is the number of people in group 2.
+
+A bit more difficult, though not overly so, is the estimate of $\hat{\sigma}$.  As we explained in class, according to this model we have two seperate estimate of $\sigma^2$ that can come from each group:
+
+\begin{align*}
+\hat{\sigma^2}_1 &= \frac{1}{n_1-1}\sum_{j=1}^{n_1}(y_{1,j}-\bar{y_1})^2\\
+\hat{\sigma^2}_2 &= \frac{1}{n_2-1}\sum_{j=1}^{n_2}(y_{2,j}-\bar{y_2})^2
+\end{align*}
+
+According to the model both $\hat{\sigma^2}_1$ and $\hat{\sigma^2}_2$ are unbiased estimates of $\sigma^2$.  We can calculate these straight forward from our data using:
+
+```{r,message=FALSE,warning=FALSE}
+library(tidyverse)
+store.data<-read.table("http://www.isi-stats.com/isi2/data/OdorRatings.txt",header=T)
+
+store.data %>% group_by(condition)%>%
+  summarize(ybars=mean(rating),sighat=var(rating))
+```
+
+In order to make the best estimate of $\sigma^2$ we should take advantage of the fact that we have two estimates and weight them by the number of observations that are contributing to that estimate.
+
+Therefore we have a pooled variance estimate of:
+
+\begin{align*}
+\hat{\sigma}^2&= \frac{(n_1-1)\hat{\sigma}^2_1+(n_2-1)\hat{\sigma}^2_2}{n_1+n_2-2}
+\end{align*}
+
+I'll leave it to you to prove that this is still an unbiased estimate of $\sigma^2$ and it can be shown that the variance of this estimate is less than $\hat{\sigma}^2_1$ or $\hat{\sigma}^2_2$.
+
+So, from our data we can calculate an estimate of $\hat{\sigma}$, or the residual standard error by:
+
+```{r}
+estimates<-store.data %>% group_by(condition)%>%
+  summarize(count=n(),sighat=var(rating))
+n1<-estimates[1,2]
+sigsq1<-estimates[1,3]
+n2<-estimates[2,2]
+sigsq2<-estimates[2,3]
+sigsq<-((n1-1)*sigsq1+(n2-1)*sigsq2)/(n1+n2-2)
+sqrt(sigsq)
+```
+
+
+This can also be found in the Residual standard error line of `lm()` in R:
+
+```{r}
+mult.mean<-lm(rating~0+condition,data=store.data)
+summary(mult.mean)
+```
+
+
+Note that if we use the second parameterization we would fit it in R using:
+
+```{r}
+reg.mult.mean<-lm(rating~condition,data=store.data)
+summary(reg.mult.mean)
+```
+
+Finally, you may have noticed how this sort of feels like a two sample t-test.  We can also use `t.test`
+
+```{r}
+t.mod<-t.test(rating~condition,data=store.data,var.equal=TRUE)
+```
+
+Note here that we set `var.equal=TRUE` in order to ensure that we are using the model we stipulated and not a model that is assuming each of our groups have differing variances.  From here we can extract an estimate of $\hat{\mu}_1-\hat{\mu}_2$ as well as conduct a formal test.  In later classes we'll discuss under what conditions this is valid and also find out how R is calculating the value of the t-statistic here.
+
+
+The biggest thing to keep in mind when using this model is that we are assuming that our variability in our data is being explained by a single factor that can take on two values.  All the remaining sources of unexplained variation are captured in $\sigma$.  If we have other variables that explain more of our data then this model may be inappropriate.
