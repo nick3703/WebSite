@@ -29,8 +29,8 @@ Now, this certainly is not the only way to represent this model, we could also w
 \begin{align*}
 i&=\mbox{Student}\\
 x_i& = \mbox{1 if student i is exposed to scent, 0 otherwise}\\
-y_{i,j}& = \mbox{Rating given by student }i\\
-y_{i,j}&= \beta_0 + \beta_1 x_i + \epsilon_{i}\\
+y_{i}& = \mbox{Rating given by student }i\\
+y_{i}&= \beta_0 + \beta_1 x_i + \epsilon_{i}\\
 \epsilon_{i}&\sim iid(0,\sigma)
 \end{align*}
 
