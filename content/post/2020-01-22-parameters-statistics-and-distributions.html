@@ -51,7 +51,7 @@ for(i in 1:M){
   shuff.scent.mod&lt;-lm(rating~new_cond,data=scent.dat.rearr)
   emp.est[i,]$stat&lt;-summary(shuff.scent.mod)$r.squared
 }</code></pre>
-<p>So even though we don’t  the distribution of <span class="math inline">\(R^2\)</span> we know it sort of looks like:</p>
+<p>So even though we don’t know the distribution of <span class="math inline">\(R^2\)</span> we know it sort of looks like:</p>
 <pre class="r"><code>emp.est %&gt;% ggplot(aes(x=stat))+geom_histogram(bins=20)</code></pre>
 <p><img src="/post/2020-01-22-parameters-statistics-and-distributions_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>If we knew the distribution of <span class="math inline">\(R^2\)</span> then we could find the area of the curve to the right of OUR statistic to find how rare it would be to observe something as extreme or more extreme then what we observed. Here we can just count:</p>
@@ -59,4 +59,5 @@ for(i in 1:M){
   summarize(p.val=n()/nrow(emp.est))</code></pre>
 <pre><code>##   p.val
 ## 1     0</code></pre>
+<p>Here we see that it is very rare to observe something as extreme as our statistic, so we might conclude that there is a relationship between scent and score.</p>
 </div>

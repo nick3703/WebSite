@@ -76,7 +76,7 @@ for(i in 1:M){
 }
 ```
 
-So even though we don't \textbf{know} the distribution of $R^2$ we know it sort of looks like:
+So even though we don't know the distribution of $R^2$ we know it sort of looks like:
 
 ```{r}
 emp.est %>% ggplot(aes(x=stat))+geom_histogram(bins=20)
@@ -88,3 +88,6 @@ If we knew the distribution of $R^2$ then we could find the area of the curve to
 emp.est %>% filter(stat > our.stat)%>%
   summarize(p.val=n()/nrow(emp.est))
 ```
+
+
+Here we see that it is very rare to observe something as extreme as our statistic, so we might conclude that there is a relationship between scent and score.
