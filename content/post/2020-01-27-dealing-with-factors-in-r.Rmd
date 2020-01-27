@@ -106,7 +106,7 @@ In this case we are fitting the model:
 
 \begin{align*}
 i&=\mbox{1 if No Caffeine, 2 if Caffeine }\\
-j&=\mbox{Student who either received Caffeine or not}
+j&=\mbox{Student who either received Caffeine or not}\\
 y_{i,j} &= \mu_i + \epsilon_{i,j}\\
 \epsilon_{i,j} &\sim N(0,\sigma)
 \end{align*}
@@ -124,7 +124,7 @@ In which case we are fitting the model:
 
 \begin{align*}
 i&=\mbox{1 if No Caffeine, 2 if Caffeine }\\
-j&=\mbox{Student who either received Caffeine or not}
+j&=\mbox{Student who either received Caffeine or not}\\
 y_{i,j} &= \mu + \alpha_i + \epsilon_{i,j}\\
 \epsilon_{i,j} &\sim N(0,\sigma)\\
 \alpha_1+\alpha_2&=0
