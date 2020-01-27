@@ -1,0 +1,323 @@
+---
+title: Dealing with Factors in R
+author: Nicholas J. Clark
+date: '2020-01-27'
+slug: dealing-with-factors-in-r
+categories:
+  - R
+tags:
+  - Class
+description: ''
+---
+
+
+
+<p>An issue in the last exploration we did in class was how to deal with factors. For example, we conducted an experiment where each individual was given a group of letters, either ordered or unordered, and asked to memorize it for 20 seconds. We then recorded the number of letters the individual got correct.</p>
+<p>To determine if there was any confouding present we also recorded the number of hours slept and whether or not an individual drank any caffeine that morning.</p>
+<p>An example of the dataset is located at:</p>
+<pre class="r"><code>library(tidyverse)
+letter.dat&lt;-read.table(&quot;http://www.isi-stats.com/isi2/data/MemorizingLettersCP.txt&quot;,skip=1,header=TRUE)
+names(letter.dat)&lt;-c(&quot;Sequence&quot;,&quot;Score&quot;,&quot;Caffeine&quot;, &quot;Hours Slept&quot;)
+glimpse(letter.dat)</code></pre>
+<pre><code>## Observations: 25
+## Variables: 4
+## $ Sequence      &lt;fct&gt; unknown-FBIO-meaningless, unknown-FBIO-meaningless, u...
+## $ Score         &lt;int&gt; 8, 21, 15, 3, 14, 7, 24, 14, 18, 3, 4, 18, 17, 21, 30...
+## $ Caffeine      &lt;fct&gt; yes, no, no, no, no, no, no, yes, yes, no, yes, yes, ...
+## $ `Hours Slept` &lt;dbl&gt; 7.670, 7.500, 6.500, 7.830, 9.000, 7.000, 8.000, 6.50...</code></pre>
+<p>Here we see that Sequence and Caffeine are both factors, as seen by <code>&lt;fct&gt;</code> when using <code>glimpse()</code>. In analyzing whether caffeine impacts the score, many of you did the following in R</p>
+<pre class="r"><code>letter.dat.mod&lt;- letter.dat %&gt;% mutate(caff.bin=ifelse(Caffeine==&quot;yes&quot;,1,0))</code></pre>
+<p>Now, there’s nothing wrong with doing this per se, but we ran into trouble when we next did:</p>
+<pre class="r"><code>bad.lm &lt;- lm(Score ~ 0 + caff.bin,data=letter.dat.mod)
+summary(bad.lm)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Score ~ 0 + caff.bin, data = letter.dat.mod)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+##     -9      1      3      8     30 
+## 
+## Coefficients:
+##          Estimate Std. Error t value Pr(&gt;|t|)    
+## caff.bin   13.000      2.833   4.589 0.000118 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 11.33 on 24 degrees of freedom
+## Multiple R-squared:  0.4674, Adjusted R-squared:  0.4452 
+## F-statistic: 21.06 on 1 and 24 DF,  p-value: 0.000118</code></pre>
+<p>To see why this is not what we want to do let’s think about what is being modeled using <code>Score ~ 0 + caff.bin</code>. Recall that by putting <code>~0</code> in the <code>lm()</code> function we are removing the intercept. Therefore the model that’s being fit is:</p>
+<p><span class="math display">\[\begin{align*}
+i&amp;=\mbox{Student}\\
+x_i &amp;=\mbox{1 if Caffeine, 0 if not for Student }i\\
+y_i &amp;= \mbox{Score of student }i\\
+y_i &amp;= \beta_1 x_i+\epsilon_i\\
+\epsilon_i &amp;\sim N(0,\sigma)
+\end{align*}\]</span></p>
+<p>So, this model is saying, if our student has caffeine we are fitting:</p>
+<p><span class="math display">\[\begin{align*}
+y_i &amp;= \beta_1 +\epsilon_i\\
+\end{align*}\]</span></p>
+<p>And if our student does NOT have caffeine we are fitting:</p>
+<p><span class="math display">\[\begin{align*}
+y_i &amp;= \epsilon_i\\
+\end{align*}\]</span></p>
+<p>The implication of this is we are saying that if our student does not have caffeine, on average they are expected to get 0 letters correct. The only structure on our response variable is <span class="math inline">\(\epsilon_i \sim N(0,\sigma)\)</span>.</p>
+<p>In this case this would be fine to do if we kept the y intercept in the model via:</p>
+<pre class="r"><code>better.lm &lt;- lm(Score ~  caff.bin,data=letter.dat.mod)
+summary(better.lm)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Score ~ caff.bin, data = letter.dat.mod)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+##    -12     -5      1      4     15 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   15.000      2.259   6.641 8.93e-07 ***
+## caff.bin      -2.000      2.823  -0.708    0.486    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 6.776 on 23 degrees of freedom
+## Multiple R-squared:  0.02135,    Adjusted R-squared:  -0.0212 
+## F-statistic: 0.5018 on 1 and 23 DF,  p-value: 0.4858</code></pre>
+<p>If we do this, then we are fitting:</p>
+<p><span class="math display">\[\begin{align*}
+i&amp;=\mbox{Student}\\
+x_i &amp;=\mbox{1 if Caffeine, 0 if not for Student }i\\
+y_i &amp;= \mbox{Score of student }i\\
+y_i &amp;= \beta_0+\beta_1 x_i+\epsilon_i\\
+\epsilon_i &amp;\sim N(0,\sigma)
+\end{align*}\]</span></p>
+<p>So, this model is saying, if our student has caffeine we are fitting:</p>
+<p><span class="math display">\[\begin{align*}
+y_i &amp;= \beta_0+\beta_1 +\epsilon_i\\
+\end{align*}\]</span></p>
+<p>And if our student does NOT have caffeine we are fitting:</p>
+<p><span class="math display">\[\begin{align*}
+y_i &amp;= \beta_0+\epsilon_i\\
+\end{align*}\]</span></p>
+<p>BUT, we don’t have to do this in R. If we read in factors R will automatically deal with them in (mostly) an appropriate manner. For instance this would be entirely fine to do:</p>
+<pre class="r"><code>factor.lm &lt;- lm(Score ~ 0+ Caffeine,data=letter.dat.mod)
+summary(factor.lm)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Score ~ 0 + Caffeine, data = letter.dat.mod)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+##    -12     -5      1      4     15 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## Caffeineno    15.000      2.259   6.641 8.93e-07 ***
+## Caffeineyes   13.000      1.694   7.674 8.69e-08 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 6.776 on 23 degrees of freedom
+## Multiple R-squared:  0.8175, Adjusted R-squared:  0.8016 
+## F-statistic:  51.5 on 2 and 23 DF,  p-value: 3.204e-09</code></pre>
+<p>In this case we are fitting the model:</p>
+<p><span class="math display">\[\begin{align*}
+i&amp;=\mbox{1 if No Caffeine, 2 if Caffeine }\\
+j&amp;=\mbox{Student who either received Caffeine or not}
+y_{i,j} &amp;= \mu_i + \epsilon_{i,j}\\
+\epsilon_{i,j} &amp;\sim N(0,\sigma)
+\end{align*}\]</span></p>
+<p>Or we can fit:</p>
+<pre class="r"><code>contrasts(letter.dat.mod$Caffeine)=contr.sum
+anova.lm &lt;- lm(Score ~  Caffeine,data=letter.dat.mod)
+summary(anova.lm)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Score ~ Caffeine, data = letter.dat.mod)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+##    -12     -5      1      4     15 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   14.000      1.412   9.917 8.94e-10 ***
+## Caffeine1      1.000      1.412   0.708    0.486    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 6.776 on 23 degrees of freedom
+## Multiple R-squared:  0.02135,    Adjusted R-squared:  -0.0212 
+## F-statistic: 0.5018 on 1 and 23 DF,  p-value: 0.4858</code></pre>
+<p>In which case we are fitting the model:</p>
+<p><span class="math display">\[\begin{align*}
+i&amp;=\mbox{1 if No Caffeine, 2 if Caffeine }\\
+j&amp;=\mbox{Student who either received Caffeine or not}
+y_{i,j} &amp;= \mu + \alpha_i + \epsilon_{i,j}\\
+\epsilon_{i,j} &amp;\sim N(0,\sigma)\\
+\alpha_1+\alpha_2&amp;=0
+\end{align*}\]</span></p>
+<p>Or finally we can fit:</p>
+<p>Or we can fit:</p>
+<pre class="r"><code>contrasts(letter.dat.mod$Caffeine)=contr.treatment
+reg.lm &lt;- lm(Score ~  Caffeine,data=letter.dat.mod)
+summary(reg.lm)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Score ~ Caffeine, data = letter.dat.mod)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+##    -12     -5      1      4     15 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   15.000      2.259   6.641 8.93e-07 ***
+## Caffeine2     -2.000      2.823  -0.708    0.486    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 6.776 on 23 degrees of freedom
+## Multiple R-squared:  0.02135,    Adjusted R-squared:  -0.0212 
+## F-statistic: 0.5018 on 1 and 23 DF,  p-value: 0.4858</code></pre>
+<p>Which again fits:</p>
+<p><span class="math display">\[\begin{align*}
+i&amp;=\mbox{Student}\\
+x_i &amp;=\mbox{1 if Caffeine, 0 if not for Student }i\\
+y_i &amp;= \mbox{Score of student }i\\
+y_i &amp;= \beta_1 x_i+\epsilon_i\\
+\epsilon_i &amp;\sim N(0,\sigma)
+\end{align*}\]</span></p>
+<p>To see what R is fitting we can always extract the model matrix from the <code>lm</code> object. For instance we see that the model from above using the binary coding correctly is:</p>
+<pre class="r"><code>model.matrix(better.lm)</code></pre>
+<pre><code>##    (Intercept) caff.bin
+## 1            1        1
+## 2            1        0
+## 3            1        0
+## 4            1        0
+## 5            1        0
+## 6            1        0
+## 7            1        0
+## 8            1        1
+## 9            1        1
+## 10           1        0
+## 11           1        1
+## 12           1        1
+## 13           1        1
+## 14           1        1
+## 15           1        0
+## 16           1        1
+## 17           1        1
+## 18           1        0
+## 19           1        1
+## 20           1        1
+## 21           1        1
+## 22           1        1
+## 23           1        1
+## 24           1        1
+## 25           1        1
+## attr(,&quot;assign&quot;)
+## [1] 0 1</code></pre>
+<p>Whereas the incorrect model yields the matrix:</p>
+<pre class="r"><code>model.matrix(bad.lm)</code></pre>
+<pre><code>##    caff.bin
+## 1         1
+## 2         0
+## 3         0
+## 4         0
+## 5         0
+## 6         0
+## 7         0
+## 8         1
+## 9         1
+## 10        0
+## 11        1
+## 12        1
+## 13        1
+## 14        1
+## 15        0
+## 16        1
+## 17        1
+## 18        0
+## 19        1
+## 20        1
+## 21        1
+## 22        1
+## 23        1
+## 24        1
+## 25        1
+## attr(,&quot;assign&quot;)
+## [1] 1</code></pre>
+<p>Similarly we have:</p>
+<pre class="r"><code>model.matrix(reg.lm)</code></pre>
+<pre><code>##    (Intercept) Caffeine2
+## 1            1         1
+## 2            1         0
+## 3            1         0
+## 4            1         0
+## 5            1         0
+## 6            1         0
+## 7            1         0
+## 8            1         1
+## 9            1         1
+## 10           1         0
+## 11           1         1
+## 12           1         1
+## 13           1         1
+## 14           1         1
+## 15           1         0
+## 16           1         1
+## 17           1         1
+## 18           1         0
+## 19           1         1
+## 20           1         1
+## 21           1         1
+## 22           1         1
+## 23           1         1
+## 24           1         1
+## 25           1         1
+## attr(,&quot;assign&quot;)
+## [1] 0 1
+## attr(,&quot;contrasts&quot;)
+## attr(,&quot;contrasts&quot;)$Caffeine
+##     2
+## no  0
+## yes 1</code></pre>
+<p>Which is the same as <code>better.lm</code> and we have:</p>
+<pre class="r"><code>model.matrix(anova.lm)</code></pre>
+<pre><code>##    (Intercept) Caffeine1
+## 1            1        -1
+## 2            1         1
+## 3            1         1
+## 4            1         1
+## 5            1         1
+## 6            1         1
+## 7            1         1
+## 8            1        -1
+## 9            1        -1
+## 10           1         1
+## 11           1        -1
+## 12           1        -1
+## 13           1        -1
+## 14           1        -1
+## 15           1         1
+## 16           1        -1
+## 17           1        -1
+## 18           1         1
+## 19           1        -1
+## 20           1        -1
+## 21           1        -1
+## 22           1        -1
+## 23           1        -1
+## 24           1        -1
+## 25           1        -1
+## attr(,&quot;assign&quot;)
+## [1] 0 1
+## attr(,&quot;contrasts&quot;)
+## attr(,&quot;contrasts&quot;)$Caffeine
+##     [,1]
+## no     1
+## yes   -1</code></pre>
+<p>Which clearly has the same column space as <code>reg.lm</code> and <code>better.lm</code>.</p>

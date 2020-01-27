@@ -1,0 +1,179 @@
+---
+title: Dealing with Factors in R
+author: Nicholas J. Clark
+date: '2020-01-27'
+slug: dealing-with-factors-in-r
+categories:
+  - R
+tags:
+  - Class
+description: ''
+---
+
+
+An issue in the last exploration we did in class was how to deal with factors.  For example, we conducted an experiment where each individual was given a group of letters, either ordered or unordered, and asked to memorize it for 20 seconds.  We then recorded the number of letters the individual got correct.
+
+To determine if there was any confouding present we also recorded the number of hours slept and whether or not an individual drank any caffeine that morning.
+
+An example of the dataset is located at:
+
+```{r,warning=FALSE,message=FALSE}
+library(tidyverse)
+letter.dat<-read.table("http://www.isi-stats.com/isi2/data/MemorizingLettersCP.txt",skip=1,header=TRUE)
+names(letter.dat)<-c("Sequence","Score","Caffeine", "Hours Slept")
+glimpse(letter.dat)
+```
+
+Here we see that Sequence and Caffeine are both factors, as seen by `<fct>` when using `glimpse()`.  In analyzing whether caffeine impacts the score, many of you did the following in R
+
+
+```{r}
+letter.dat.mod<- letter.dat %>% mutate(caff.bin=ifelse(Caffeine=="yes",1,0))
+
+```
+
+Now, there's nothing wrong with doing this per se, but we ran into trouble when we next did:
+
+```{r}
+bad.lm <- lm(Score ~ 0 + caff.bin,data=letter.dat.mod)
+summary(bad.lm)
+```
+
+To see why this is not what we want to do let's think about what is being modeled using `Score ~ 0 + caff.bin`.  Recall that by putting `~0` in the `lm()` function we are removing the intercept.  Therefore the model that's being fit is:
+
+\begin{align*}
+i&=\mbox{Student}\\
+x_i &=\mbox{1 if Caffeine, 0 if not for Student }i\\
+y_i &= \mbox{Score of student }i\\
+y_i &= \beta_1 x_i+\epsilon_i\\
+\epsilon_i &\sim N(0,\sigma)
+\end{align*}
+
+So, this model is saying, if our student has caffeine we are fitting:
+
+\begin{align*}
+y_i &= \beta_1 +\epsilon_i\\
+\end{align*}
+
+And if our student does NOT have caffeine we are fitting:
+
+\begin{align*}
+y_i &= \epsilon_i\\
+\end{align*}
+
+The implication of this is we are saying that if our student does not have caffeine, on average they are expected to get 0 letters correct.  The only structure on our response variable is $\epsilon_i \sim N(0,\sigma)$.  
+
+In this case this would be fine to do if we kept the y intercept in the model via:
+
+```{r}
+better.lm <- lm(Score ~  caff.bin,data=letter.dat.mod)
+summary(better.lm)
+```
+
+If we do this, then we are fitting:
+
+
+\begin{align*}
+i&=\mbox{Student}\\
+x_i &=\mbox{1 if Caffeine, 0 if not for Student }i\\
+y_i &= \mbox{Score of student }i\\
+y_i &= \beta_0+\beta_1 x_i+\epsilon_i\\
+\epsilon_i &\sim N(0,\sigma)
+\end{align*}
+
+
+So, this model is saying, if our student has caffeine we are fitting:
+
+\begin{align*}
+y_i &= \beta_0+\beta_1 +\epsilon_i\\
+\end{align*}
+
+And if our student does NOT have caffeine we are fitting:
+
+\begin{align*}
+y_i &= \beta_0+\epsilon_i\\
+\end{align*}
+
+BUT, we don't have to do this in R.  If we read in factors R will automatically deal with them in (mostly) an appropriate manner.  For instance this would be entirely fine to do:
+
+```{r}
+factor.lm <- lm(Score ~ 0+ Caffeine,data=letter.dat.mod)
+summary(factor.lm)
+```
+
+In this case we are fitting the model:
+
+
+\begin{align*}
+i&=\mbox{1 if No Caffeine, 2 if Caffeine }\\
+j&=\mbox{Student who either received Caffeine or not}
+y_{i,j} &= \mu_i + \epsilon_{i,j}\\
+\epsilon_{i,j} &\sim N(0,\sigma)
+\end{align*}
+
+Or we can fit:
+
+```{r}
+contrasts(letter.dat.mod$Caffeine)=contr.sum
+anova.lm <- lm(Score ~  Caffeine,data=letter.dat.mod)
+summary(anova.lm)
+```
+
+In which case we are fitting the model:
+
+
+\begin{align*}
+i&=\mbox{1 if No Caffeine, 2 if Caffeine }\\
+j&=\mbox{Student who either received Caffeine or not}
+y_{i,j} &= \mu + \alpha_i + \epsilon_{i,j}\\
+\epsilon_{i,j} &\sim N(0,\sigma)\\
+\alpha_1+\alpha_2&=0
+\end{align*}
+
+Or finally we can fit:
+
+
+Or we can fit:
+
+```{r}
+contrasts(letter.dat.mod$Caffeine)=contr.treatment
+reg.lm <- lm(Score ~  Caffeine,data=letter.dat.mod)
+summary(reg.lm)
+```
+
+Which again fits:
+
+\begin{align*}
+i&=\mbox{Student}\\
+x_i &=\mbox{1 if Caffeine, 0 if not for Student }i\\
+y_i &= \mbox{Score of student }i\\
+y_i &= \beta_1 x_i+\epsilon_i\\
+\epsilon_i &\sim N(0,\sigma)
+\end{align*}
+
+To see what R is fitting we can always extract the model matrix from the `lm` object.  For instance we see that the model from above using the binary coding correctly is:
+
+```{r}
+model.matrix(better.lm)
+```
+
+
+Whereas the incorrect model yields the matrix:
+
+```{r}
+model.matrix(bad.lm)
+```
+
+Similarly we have:
+
+```{r}
+model.matrix(reg.lm)
+```
+
+Which is the same as `better.lm` and we have:
+
+```{r}
+model.matrix(anova.lm)
+```
+
+Which clearly has the same column space as `reg.lm` and `better.lm`.
