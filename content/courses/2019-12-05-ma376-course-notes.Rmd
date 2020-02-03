@@ -52,3 +52,7 @@ library(tidyverse)
 [Lesson 7](https://github.com/nick3703/MA376/blob/master/Lsn7.pdf)
 
 [Lesson 7 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn7.Rmd)
+
+[Lesson 8](https://github.com/nick3703/MA376/blob/master/Lsn8.pdf)
+
+[Lesson 8 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn8.Rmd)
