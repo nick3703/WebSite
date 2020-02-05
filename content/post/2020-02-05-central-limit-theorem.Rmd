@@ -1,0 +1,72 @@
+---
+title: Central Limit Theorem
+author: Nicholas J. Clark
+date: '2020-02-05'
+slug: central-limit-theorem
+categories:
+  - Definitions
+tags:
+  - Class
+description: ''
+---
+
+
+In class we repeatedly talk about the Central Limit Theorem and I find it to be one of the least understood topics that students cover in MA206 or MA206Y.  The classical CLT for iid random variables with $E[X]=\mu$ and $Var(X)=\sigma^2 \in (0,\infty)$ states:
+
+$$\sqrt{n}(\bar{X}-\mu)\to N(0,\sigma^2)$$
+
+That is, the SAMPLE MEAN converge to a Normal distribution when scaled by $\sqrt{n}$.  Practically, this means that if $n$ is large enough we can treat $\bar{X}$ as having a Normal distribution with mean of 0 and Variance of $\frac{\sigma^2}{n}$.  For example, perhaps $X\sim Po(3)$, then the underlying distribution of $X$ is
+
+```{r,warning=FALSE,message=FALSE}
+library(tidyverse)
+dat <- data.frame(k = 0:20, prob = dpois(0:20, 3))
+p <- ggplot(dat, aes(x = k, y = prob))
+p + geom_segment(aes(xend = k, yend = 0),size=3) + ylab('p(k)')
+```
+
+Here we can see that $X$ is clearly not Normally distributed, in fact no matter what we do to $X$ it will NEVER be Normally distributed, it will be Poisson distributed with $\lambda=3$.  What can change, though, is the distribution of $\bar{X}$.  This is probably confusing because we never actually observe more than one $\bar{X}$, so there's not really a way to check this in a real experiment.  However, we can do the following:
+
+1.) Simulate $X_1,X_2,\cdots,X_{10}$ from a Poisson (3) distribution.  Note that here $n=10$.
+2.) Calculate $\bar{X}$ from those 10 values.
+3.) Repeat this 500 times and plot a histogram to get a feel for the distribution of $\bar{X}$
+4.) Overlay a Normal distribution on top of the histogram of $\bar{X}$ values.
+
+
+
+
+```{r}
+M<-500
+n=10
+x.bars<-data.frame(trial=seq(1,M),value=NA)
+for(j in 1:M){
+  data<-rpois(n,3)
+  x.bars[j,]=mean(data)
+}
+
+x.bars %>% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
+                   colour = "black", 
+                   fill = "white",bins=20)+
+                    stat_function(fun = dnorm, args = list(mean = 3, sd = sqrt(3)/sqrt(n)),color="red",size=2)
+
+```
+
+Here we see that after $n=10$ we have already started to look like a Normal distribution.  We can repeat the same thing with $n=30$ we have:
+
+```{r}
+M<-500
+n=30
+x.bars<-data.frame(trial=seq(1,M),value=NA)
+for(j in 1:M){
+  data<-rpois(n,3)
+  x.bars[j,]=mean(data)
+}
+
+x.bars %>% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
+                   colour = "black", 
+                   fill = "white",bins=20)+
+                    stat_function(fun = dnorm, args = list(mean = 3, sd = sqrt(3)/sqrt(n)),color="red",size=2)
+
+```
+
+
+So in this case it looks like $n=10$ might be big enough for the CLT to work.

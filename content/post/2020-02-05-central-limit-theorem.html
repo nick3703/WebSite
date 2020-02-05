@@ -1,0 +1,55 @@
+---
+title: Central Limit Theorem
+author: Nicholas J. Clark
+date: '2020-02-05'
+slug: central-limit-theorem
+categories:
+  - Definitions
+tags:
+  - Class
+description: ''
+---
+
+
+
+<p>In class we repeatedly talk about the Central Limit Theorem and I find it to be one of the least understood topics that students cover in MA206 or MA206Y. The classical CLT for iid random variables with <span class="math inline">\(E[X]=\mu\)</span> and <span class="math inline">\(Var(X)=\sigma^2 \in (0,\infty)\)</span> states:</p>
+<p><span class="math display">\[\sqrt{n}(\bar{X}-\mu)\to N(0,\sigma^2)\]</span></p>
+<p>That is, the SAMPLE MEAN converge to a Normal distribution when scaled by <span class="math inline">\(\sqrt{n}\)</span>. Practically, this means that if <span class="math inline">\(n\)</span> is large enough we can treat <span class="math inline">\(\bar{X}\)</span> as having a Normal distribution with mean of 0 and Variance of <span class="math inline">\(\frac{\sigma^2}{n}\)</span>. For example, perhaps <span class="math inline">\(X\sim Po(3)\)</span>, then the underlying distribution of <span class="math inline">\(X\)</span> is</p>
+<pre class="r"><code>library(tidyverse)
+dat &lt;- data.frame(k = 0:20, prob = dpois(0:20, 3))
+p &lt;- ggplot(dat, aes(x = k, y = prob))
+p + geom_segment(aes(xend = k, yend = 0),size=3) + ylab(&#39;p(k)&#39;)</code></pre>
+<p><img src="/post/2020-02-05-central-limit-theorem_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>Here we can see that <span class="math inline">\(X\)</span> is clearly not Normally distributed, in fact no matter what we do to <span class="math inline">\(X\)</span> it will NEVER be Normally distributed, it will be Poisson distributed with <span class="math inline">\(\lambda=3\)</span>. What can change, though, is the distribution of <span class="math inline">\(\bar{X}\)</span>. This is probably confusing because we never actually observe more than one <span class="math inline">\(\bar{X}\)</span>, so there’s not really a way to check this in a real experiment. However, we can do the following:</p>
+<p>1.) Simulate <span class="math inline">\(X_1,X_2,\cdots,X_{10}\)</span> from a Poisson (3) distribution. Note that here <span class="math inline">\(n=10\)</span>.
+2.) Calculate <span class="math inline">\(\bar{X}\)</span> from those 10 values.
+3.) Repeat this 500 times and plot a histogram to get a feel for the distribution of <span class="math inline">\(\bar{X}\)</span>
+4.) Overlay a Normal distribution on top of the histogram of <span class="math inline">\(\bar{X}\)</span> values.</p>
+<pre class="r"><code>M&lt;-500
+n=10
+x.bars&lt;-data.frame(trial=seq(1,M),value=NA)
+for(j in 1:M){
+  data&lt;-rpois(n,3)
+  x.bars[j,]=mean(data)
+}
+
+x.bars %&gt;% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
+                   colour = &quot;black&quot;, 
+                   fill = &quot;white&quot;,bins=20)+
+                    stat_function(fun = dnorm, args = list(mean = 3, sd = sqrt(3)/sqrt(n)),color=&quot;red&quot;,size=2)</code></pre>
+<p><img src="/post/2020-02-05-central-limit-theorem_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Here we see that after <span class="math inline">\(n=10\)</span> we have already started to look like a Normal distribution. We can repeat the same thing with <span class="math inline">\(n=30\)</span> we have:</p>
+<pre class="r"><code>M&lt;-500
+n=30
+x.bars&lt;-data.frame(trial=seq(1,M),value=NA)
+for(j in 1:M){
+  data&lt;-rpois(n,3)
+  x.bars[j,]=mean(data)
+}
+
+x.bars %&gt;% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
+                   colour = &quot;black&quot;, 
+                   fill = &quot;white&quot;,bins=20)+
+                    stat_function(fun = dnorm, args = list(mean = 3, sd = sqrt(3)/sqrt(n)),color=&quot;red&quot;,size=2)</code></pre>
+<p><img src="/post/2020-02-05-central-limit-theorem_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>So in this case it looks like <span class="math inline">\(n=10\)</span> might be big enough for the CLT to work.</p>
