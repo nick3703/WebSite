@@ -26,9 +26,13 @@ p + geom_segment(aes(xend = k, yend = 0),size=3) + ylab('p(k)')
 
 Here we can see that $X$ is clearly not Normally distributed, in fact no matter what we do to $X$ it will NEVER be Normally distributed, it will be Poisson distributed with $\lambda=3$.  What can change, though, is the distribution of $\bar{X}$.  This is probably confusing because we never actually observe more than one $\bar{X}$, so there's not really a way to check this in a real experiment.  However, we can do the following:
 
+
 1.) Simulate $X_1,X_2,\cdots,X_{10}$ from a Poisson (3) distribution.  Note that here $n=10$.
+
 2.) Calculate $\bar{X}$ from those 10 values.
+
 3.) Repeat this 500 times and plot a histogram to get a feel for the distribution of $\bar{X}$
+
 4.) Overlay a Normal distribution on top of the histogram of $\bar{X}$ values.
 
 
@@ -40,7 +44,7 @@ n=10
 x.bars<-data.frame(trial=seq(1,M),value=NA)
 for(j in 1:M){
   data<-rpois(n,3)
-  x.bars[j,]=mean(data)
+  x.bars[j,]$value=mean(data)
 }
 
 x.bars %>% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
@@ -58,7 +62,7 @@ n=30
 x.bars<-data.frame(trial=seq(1,M),value=NA)
 for(j in 1:M){
   data<-rpois(n,3)
-  x.bars[j,]=mean(data)
+  x.bars[j,]$value=mean(data)
 }
 
 x.bars %>% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
@@ -69,4 +73,122 @@ x.bars %>% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
 ```
 
 
-So in this case it looks like $n=10$ might be big enough for the CLT to work.
+So in this case it looks like $n=10$ might work, but certainly we don't lose anything by using $n=30$.  
+
+Now let's consider another case where $X_i$ has a [log-normal](https://en.wikipedia.org/wiki/Log-normal_distribution) distribution with $\mu=0$, and $\sigma^2=1$.  It can be shown that the mean of this distribution is $\exp(1/2)\approx 1.65$ and the variance is $(\exp(1)-1)\exp(1)\approx 4.67$.
+
+
+```{r,warning=FALSE}
+M<-500
+n=10
+mu=0
+sd=1
+x.bars<-data.frame(trial=seq(1,M),value=NA)
+for(j in 1:M){
+  data<-exp(rnorm(n,mu,sd))
+  x.bars[j,]$value=mean(data)
+}
+
+mu.xbar=exp(mu+sd^2/2)
+var=(exp(sd^2)-1)*exp(2*mu+sd^2)
+x.bars %>% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
+                   colour = "black", 
+                   fill = "white",bins=20)+
+                    stat_function(fun = dnorm, args = list(mean = mu.xbar, sd=sqrt(var)/sqrt(n)),color="red",size=2)+
+  xlim(0,5)
+```
+
+Here we see potentially some issues
+
+```{r,warning=FALSE}
+M<-500
+n=30
+mu=0
+sd=1
+x.bars<-data.frame(trial=seq(1,M),value=NA)
+for(j in 1:M){
+  data<-exp(rnorm(n,mu,sd))
+  x.bars[j,]$value=mean(data)
+}
+
+mu.xbar=exp(mu+sd^2/2)
+var=(exp(sd^2)-1)*exp(2*mu+sd^2)
+x.bars %>% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
+                   colour = "black", 
+                   fill = "white",bins=20)+
+                    stat_function(fun = dnorm, args = list(mean = mu.xbar, sd=sqrt(var)/sqrt(n)),color="red",size=2)+
+  xlim(0,5)
+```
+
+By $n=30$ they are largely gone.  However, let's consider a Log-Normal with $\sigma=2$
+
+```{r,warning=FALSE}
+M<-500
+n=30
+mu=0
+sd=2
+x.bars<-data.frame(trial=seq(1,M),value=NA)
+for(j in 1:M){
+  data<-exp(rnorm(n,mu,sd))
+  x.bars[j,]$value=mean(data)
+}
+
+mu.xbar=exp(mu+sd^2/2)
+var=(exp(sd^2)-1)*exp(2*mu+sd^2)
+x.bars %>% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
+                   colour = "black", 
+                   fill = "white",bins=20)+
+                    stat_function(fun = dnorm, args = list(mean = mu.xbar, sd=sqrt(var)/sqrt(n)),color="red",size=2)
+
+```
+
+For $n=30$ this still doesn't look so good.  How about $n=50$?
+
+```{r,warning=FALSE}
+M<-500
+n=50
+mu=0
+sd=2
+x.bars<-data.frame(trial=seq(1,M),value=NA)
+for(j in 1:M){
+  data<-exp(rnorm(n,mu,sd))
+  x.bars[j,]$value=mean(data)
+}
+
+mu.xbar=exp(mu+sd^2/2)
+var=(exp(sd^2)-1)*exp(2*mu+sd^2)
+x.bars %>% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
+                   colour = "black", 
+                   fill = "white",bins=20)+
+                    stat_function(fun = dnorm, args = list(mean = mu.xbar, sd=sqrt(var)/sqrt(n)),color="red",size=2)
+
+```
+
+
+$n=100?$
+
+
+```{r,warning=FALSE}
+M<-500
+n=100
+mu=0
+sd=2
+x.bars<-data.frame(trial=seq(1,M),value=NA)
+for(j in 1:M){
+  data<-exp(rnorm(n,mu,sd))
+  x.bars[j,]$value=mean(data)
+}
+
+mu.xbar=exp(mu+sd^2/2)
+var=(exp(sd^2)-1)*exp(2*mu+sd^2)
+x.bars %>% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
+                   colour = "black", 
+                   fill = "white",bins=20)+
+                    stat_function(fun = dnorm, args = list(mean = mu.xbar, sd=sqrt(var)/sqrt(n)),color="red",size=2)
+
+```
+
+
+The bottom line is, sometimes, if $X_i$ has a distribution that has 'nice' properties, then we are ok with small $n$.  For other distributions, $n$ may have to be huge in order to invoke the CLT.
+
+The second important point for the CLT is that while it's primarily thought of as a tool to find the distribution of $\bar{X}$ we can actually use it in much more general settings.  In MA476 you will learn about Maximum Likelihood Estimators (MLEs).  These are logical ways to estimate any parameter (see previous blog post on parameters).  In this case, as long as certain conditions are met (which are most of the time) the CLT says that $\sqrt{n}(\hat{\theta}-\theta)\to N(0,\frac{1}{I_{1}(\theta)})$ where $\hat{\theta}$ is the MLE and $I_{1}(\theta)$ is the Fisher's Information at $\theta$.  What this means is, for many cases when $n$ is big enough we have approximate Normality.  However, we have to clearly know what is meant by big enough...

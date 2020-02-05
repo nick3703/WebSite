@@ -21,16 +21,16 @@ p &lt;- ggplot(dat, aes(x = k, y = prob))
 p + geom_segment(aes(xend = k, yend = 0),size=3) + ylab(&#39;p(k)&#39;)</code></pre>
 <p><img src="/post/2020-02-05-central-limit-theorem_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>Here we can see that <span class="math inline">\(X\)</span> is clearly not Normally distributed, in fact no matter what we do to <span class="math inline">\(X\)</span> it will NEVER be Normally distributed, it will be Poisson distributed with <span class="math inline">\(\lambda=3\)</span>. What can change, though, is the distribution of <span class="math inline">\(\bar{X}\)</span>. This is probably confusing because we never actually observe more than one <span class="math inline">\(\bar{X}\)</span>, so there’s not really a way to check this in a real experiment. However, we can do the following:</p>
-<p>1.) Simulate <span class="math inline">\(X_1,X_2,\cdots,X_{10}\)</span> from a Poisson (3) distribution. Note that here <span class="math inline">\(n=10\)</span>.
-2.) Calculate <span class="math inline">\(\bar{X}\)</span> from those 10 values.
-3.) Repeat this 500 times and plot a histogram to get a feel for the distribution of <span class="math inline">\(\bar{X}\)</span>
-4.) Overlay a Normal distribution on top of the histogram of <span class="math inline">\(\bar{X}\)</span> values.</p>
+<p>1.) Simulate <span class="math inline">\(X_1,X_2,\cdots,X_{10}\)</span> from a Poisson (3) distribution. Note that here <span class="math inline">\(n=10\)</span>.</p>
+<p>2.) Calculate <span class="math inline">\(\bar{X}\)</span> from those 10 values.</p>
+<p>3.) Repeat this 500 times and plot a histogram to get a feel for the distribution of <span class="math inline">\(\bar{X}\)</span></p>
+<p>4.) Overlay a Normal distribution on top of the histogram of <span class="math inline">\(\bar{X}\)</span> values.</p>
 <pre class="r"><code>M&lt;-500
 n=10
 x.bars&lt;-data.frame(trial=seq(1,M),value=NA)
 for(j in 1:M){
   data&lt;-rpois(n,3)
-  x.bars[j,]=mean(data)
+  x.bars[j,]$value=mean(data)
 }
 
 x.bars %&gt;% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
@@ -44,7 +44,7 @@ n=30
 x.bars&lt;-data.frame(trial=seq(1,M),value=NA)
 for(j in 1:M){
   data&lt;-rpois(n,3)
-  x.bars[j,]=mean(data)
+  x.bars[j,]$value=mean(data)
 }
 
 x.bars %&gt;% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
@@ -52,4 +52,98 @@ x.bars %&gt;% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
                    fill = &quot;white&quot;,bins=20)+
                     stat_function(fun = dnorm, args = list(mean = 3, sd = sqrt(3)/sqrt(n)),color=&quot;red&quot;,size=2)</code></pre>
 <p><img src="/post/2020-02-05-central-limit-theorem_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p>So in this case it looks like <span class="math inline">\(n=10\)</span> might be big enough for the CLT to work.</p>
+<p>So in this case it looks like <span class="math inline">\(n=10\)</span> might work, but certainly we don’t lose anything by using <span class="math inline">\(n=30\)</span>.</p>
+<p>Now let’s consider another case where <span class="math inline">\(X_i\)</span> has a <a href="https://en.wikipedia.org/wiki/Log-normal_distribution">log-normal</a> distribution with <span class="math inline">\(\mu=0\)</span>, and <span class="math inline">\(\sigma^2=1\)</span>. It can be shown that the mean of this distribution is <span class="math inline">\(\exp(1/2)\approx 1.65\)</span> and the variance is <span class="math inline">\((\exp(1)-1)\exp(1)\approx 4.67\)</span>.</p>
+<pre class="r"><code>M&lt;-500
+n=10
+mu=0
+sd=1
+x.bars&lt;-data.frame(trial=seq(1,M),value=NA)
+for(j in 1:M){
+  data&lt;-exp(rnorm(n,mu,sd))
+  x.bars[j,]$value=mean(data)
+}
+
+mu.xbar=exp(mu+sd^2/2)
+var=(exp(sd^2)-1)*exp(2*mu+sd^2)
+x.bars %&gt;% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
+                   colour = &quot;black&quot;, 
+                   fill = &quot;white&quot;,bins=20)+
+                    stat_function(fun = dnorm, args = list(mean = mu.xbar, sd=sqrt(var)/sqrt(n)),color=&quot;red&quot;,size=2)+
+  xlim(0,5)</code></pre>
+<p><img src="/post/2020-02-05-central-limit-theorem_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Here we see potentially some issues</p>
+<pre class="r"><code>M&lt;-500
+n=30
+mu=0
+sd=1
+x.bars&lt;-data.frame(trial=seq(1,M),value=NA)
+for(j in 1:M){
+  data&lt;-exp(rnorm(n,mu,sd))
+  x.bars[j,]$value=mean(data)
+}
+
+mu.xbar=exp(mu+sd^2/2)
+var=(exp(sd^2)-1)*exp(2*mu+sd^2)
+x.bars %&gt;% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
+                   colour = &quot;black&quot;, 
+                   fill = &quot;white&quot;,bins=20)+
+                    stat_function(fun = dnorm, args = list(mean = mu.xbar, sd=sqrt(var)/sqrt(n)),color=&quot;red&quot;,size=2)+
+  xlim(0,5)</code></pre>
+<p><img src="/post/2020-02-05-central-limit-theorem_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>By <span class="math inline">\(n=30\)</span> they are largely gone. However, let’s consider a Log-Normal with <span class="math inline">\(\sigma=2\)</span></p>
+<pre class="r"><code>M&lt;-500
+n=30
+mu=0
+sd=2
+x.bars&lt;-data.frame(trial=seq(1,M),value=NA)
+for(j in 1:M){
+  data&lt;-exp(rnorm(n,mu,sd))
+  x.bars[j,]$value=mean(data)
+}
+
+mu.xbar=exp(mu+sd^2/2)
+var=(exp(sd^2)-1)*exp(2*mu+sd^2)
+x.bars %&gt;% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
+                   colour = &quot;black&quot;, 
+                   fill = &quot;white&quot;,bins=20)+
+                    stat_function(fun = dnorm, args = list(mean = mu.xbar, sd=sqrt(var)/sqrt(n)),color=&quot;red&quot;,size=2)</code></pre>
+<p><img src="/post/2020-02-05-central-limit-theorem_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>For <span class="math inline">\(n=30\)</span> this still doesn’t look so good. How about <span class="math inline">\(n=50\)</span>?</p>
+<pre class="r"><code>M&lt;-500
+n=50
+mu=0
+sd=2
+x.bars&lt;-data.frame(trial=seq(1,M),value=NA)
+for(j in 1:M){
+  data&lt;-exp(rnorm(n,mu,sd))
+  x.bars[j,]$value=mean(data)
+}
+
+mu.xbar=exp(mu+sd^2/2)
+var=(exp(sd^2)-1)*exp(2*mu+sd^2)
+x.bars %&gt;% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
+                   colour = &quot;black&quot;, 
+                   fill = &quot;white&quot;,bins=20)+
+                    stat_function(fun = dnorm, args = list(mean = mu.xbar, sd=sqrt(var)/sqrt(n)),color=&quot;red&quot;,size=2)</code></pre>
+<p><img src="/post/2020-02-05-central-limit-theorem_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><span class="math inline">\(n=100?\)</span></p>
+<pre class="r"><code>M&lt;-500
+n=100
+mu=0
+sd=2
+x.bars&lt;-data.frame(trial=seq(1,M),value=NA)
+for(j in 1:M){
+  data&lt;-exp(rnorm(n,mu,sd))
+  x.bars[j,]$value=mean(data)
+}
+
+mu.xbar=exp(mu+sd^2/2)
+var=(exp(sd^2)-1)*exp(2*mu+sd^2)
+x.bars %&gt;% ggplot(aes(x=value))+ geom_histogram(aes(y =..density..),
+                   colour = &quot;black&quot;, 
+                   fill = &quot;white&quot;,bins=20)+
+                    stat_function(fun = dnorm, args = list(mean = mu.xbar, sd=sqrt(var)/sqrt(n)),color=&quot;red&quot;,size=2)</code></pre>
+<p><img src="/post/2020-02-05-central-limit-theorem_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>The bottom line is, sometimes, if <span class="math inline">\(X_i\)</span> has a distribution that has ‘nice’ properties, then we are ok with small <span class="math inline">\(n\)</span>. For other distributions, <span class="math inline">\(n\)</span> may have to be huge in order to invoke the CLT.</p>
+<p>The second important point for the CLT is that while it’s primarily thought of as a tool to find the distribution of <span class="math inline">\(\bar{X}\)</span> we can actually use it in much more general settings. In MA476 you will learn about Maximum Likelihood Estimators (MLEs). These are logical ways to estimate any parameter (see previous blog post on parameters). In this case, as long as certain conditions are met (which are most of the time) the CLT says that <span class="math inline">\(\sqrt{n}(\hat{\theta}-\theta)\to N(0,\frac{1}{I_{1}(\theta)})\)</span> where <span class="math inline">\(\hat{\theta}\)</span> is the MLE and <span class="math inline">\(I_{1}(\theta)\)</span> is the Fisher’s Information at <span class="math inline">\(\theta\)</span>. What this means is, for many cases when <span class="math inline">\(n\)</span> is big enough we have approximate Normality. However, we have to clearly know what is meant by big enough…</p>
