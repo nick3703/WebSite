@@ -63,3 +63,8 @@ library(tidyverse)
 [Lesson 9 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn9.Rmd)
 
 [Data For Lesson 9](https://raw.githubusercontent.com/nick3703/MA376/master/ACFT.csv)
+
+
+[Lesson 10](https://github.com/nick3703/MA376/blob/master/Lsn10.pdf)
+
+[Lesson 10 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn10.Rmd)
