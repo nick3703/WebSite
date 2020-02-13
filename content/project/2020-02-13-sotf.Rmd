@@ -13,6 +13,6 @@ categories: ["data science"]
 knitr::opts_chunk$set(collapse = TRUE,out.width="100%")
 ```
 
-[test](https://gallant-ritchie-afafb4.netlify.com/aogslides/Presentation.html)
+[test](https://gallant-ritchie-afafb4.netlify.com/SOTF/SOTFPresentation.html)
 
 
