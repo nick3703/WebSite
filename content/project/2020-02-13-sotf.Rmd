@@ -3,7 +3,7 @@ title: "SOTF Talk"
 author: "Nicholas J. Clark"
 date: '2020-02-13'
 description: ''
-slug: aogtalk
+slug: sotftalk
 tags: ["talks"]
 categories: ["data science"]
 ---
