@@ -69,6 +69,6 @@ library(tidyverse)
 
 [Lesson 10 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn10.Rmd)
 
-[Lesson 10](https://github.com/nick3703/MA376/blob/master/Lsn11.pdf)
+[Lesson 11](https://github.com/nick3703/MA376/blob/master/Lsn11.pdf)
 
-[Lesson 10 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn11.Rmd)
+[Lesson 11 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn11.Rmd)

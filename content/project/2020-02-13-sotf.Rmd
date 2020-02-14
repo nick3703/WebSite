@@ -1,7 +1,7 @@
 ---
 title: "SOTF Talk"
 author: "Nicholas J. Clark"
-date: '2019-11-20'
+date: '2020-02-13'
 description: ''
 slug: aogtalk
 tags: ["talks"]
@@ -13,6 +13,6 @@ categories: ["data science"]
 knitr::opts_chunk$set(collapse = TRUE,out.width="100%")
 ```
 
-[test](https://gallant-ritchie-afafb4.netlify.com/SOTF/SOTFPresentation.html)
+[13 Feb Presentation](https://gallant-ritchie-afafb4.netlify.com/SOTF/SOTFPresentation.html)
 
 
