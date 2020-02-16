@@ -46,7 +46,7 @@ Note that $\alpha_3$ is not present as we have imposed the sum to zero constrain
 
 Note that if our null hypothesis is a true, then our design matrix is just the $9 \times 1$ vector of all $1$ values.  
 
-From any design matrix we can form an orthogonal projection matrix by $P_x=X(X^T X)^{-1} X^T$.  If we form $\hat{y}= P_x y$ we can think of the projection matrix as projecting our $y$ vector onto the column space spanned by the design matrix.
+From any design matrix we can form an orthogonal projection matrix by $P_x=X(X^T X)^{-1} X^T$ that, in essence, projects $\mathbf{y}$ onto the closest point (in the least squares sence) in the column space spanned by $\mathbf{X}$.  If we form $\hat{y}= P_x y$ we can think of the projection matrix as projecting our $y$ vector onto the column space spanned by the design matrix.
 
 If we want to see how close our $\hat{y}$ is to $y$ we can calculate
 
