@@ -1,0 +1,125 @@
+---
+title: A Linear Algebra Look at ANOVA
+author: Clark
+date: '2020-02-16'
+slug: a-linear-algebra-look-at-anova
+categories:
+  - Linear Model
+tags:
+  - Class
+  - RMarkdown
+description: ''
+---
+
+
+
+<p>In class a few times I’ve made reference to the fact that knowing Linear Algebra can help us quite a bit. Let’s take for example the one-way ANOVA model:</p>
+<p><span class="math display">\[ y_{i,j} = \mu + \alpha_i+\epsilon_{i,j}\]</span></p>
+<p>Let’s say we have a balanced ANOVA, with three groups of three observations per group</p>
+<p>We can express this model using matrix notation as:</p>
+<p><span class="math display">\[\mathbf{y} = \left[\begin{array}
+{rrr}
+1 &amp; 1 &amp; 0 \\
+1 &amp; 1 &amp; 0 \\
+1 &amp; 1 &amp; 0\\
+1 &amp; 0 &amp; 1 \\
+1 &amp; 0 &amp; 1 \\
+1 &amp; 0 &amp; 1\\
+1 &amp; -1 &amp; -1 \\
+1 &amp; -1 &amp; -1 \\
+1 &amp; -1 &amp; -1
+\end{array}\right]
+\left[\begin{array} 
+{c}
+\mu \\
+\alpha_1\\
+\alpha_2
+\end{array}\right]+ \mathbf{\epsilon}\]</span></p>
+<p>Note that <span class="math inline">\(\alpha_3\)</span> is not present as we have imposed the sum to zero constraint on our effects. We have, now, a matrix times a vector. We will refer to our <span class="math inline">\(9\times 3\)</span> matrix as our design matrix, <span class="math inline">\(\mathbf{X}\)</span>.</p>
+<p>Note that if our null hypothesis is a true, then our design matrix is just the <span class="math inline">\(9 \times 1\)</span> vector of all <span class="math inline">\(1\)</span> values.</p>
+<p>From any design matrix we can form an orthogonal projection matrix by <span class="math inline">\(P_x=X(X^T X)^{-1} X^T\)</span>. If we form <span class="math inline">\(\hat{y}= P_x y\)</span> we can think of the projection matrix as projecting our <span class="math inline">\(y\)</span> vector onto the column space spanned by the design matrix.</p>
+<p>If we want to see how close our <span class="math inline">\(\hat{y}\)</span> is to <span class="math inline">\(y\)</span> we can calculate</p>
+<p><span class="math display">\[ (\mathbf{y}-\hat{\mathbf{y}})^T(\mathbf{y}-\hat{\mathbf{y}}) \\
+=(\mathbf{y}-P_x \mathbf{y})^T(\mathbf{y}-P_x \mathbf{y}) \\
+=\mathbf{y}(I-P_x)^T(I-P_x) \mathbf{y}\\
+=\mathbf{y}(I-P_x) \mathbf{y}\]</span></p>
+<p>Where we note that the last equality is true as our projection matrix is symmetric and idempotent (check this!).</p>
+<p>If we recall that our Total Sums of Squares is just the Sums of Squares from the null model, we can form the projection matrix using the design matrix of the intercept only model as:</p>
+<pre class="r"><code>X=matrix(1,nrow=9,ncol=1)
+
+Px=X %*% solve(t(X)%*%X)%*%t(X)
+Px</code></pre>
+<pre><code>##            [,1]      [,2]      [,3]      [,4]      [,5]      [,6]      [,7]
+##  [1,] 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111
+##  [2,] 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111
+##  [3,] 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111
+##  [4,] 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111
+##  [5,] 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111
+##  [6,] 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111
+##  [7,] 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111
+##  [8,] 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111
+##  [9,] 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111
+##            [,8]      [,9]
+##  [1,] 0.1111111 0.1111111
+##  [2,] 0.1111111 0.1111111
+##  [3,] 0.1111111 0.1111111
+##  [4,] 0.1111111 0.1111111
+##  [5,] 0.1111111 0.1111111
+##  [6,] 0.1111111 0.1111111
+##  [7,] 0.1111111 0.1111111
+##  [8,] 0.1111111 0.1111111
+##  [9,] 0.1111111 0.1111111</code></pre>
+<p>That is, this yields the <span class="math inline">\(9 \times 9\)</span> matrix with every element equal to <span class="math inline">\(1/9\)</span>. If we call this <span class="math inline">\(Px_1\)</span>, we note that our total sums of squares can be written as:</p>
+<p><span class="math display">\[ (\mathbf{y}- Px_1 \mathbf{y})^T(\mathbf{y}- Px_1 \mathbf{y})\\
+=\mathbf{y}(I-Px_1)^T(I-Px_1) \mathbf{y} \\
+=\mathbf{y}(I-Px_1) \mathbf{y}\]</span></p>
+<p>Now, we note we can decompose the Total Sums of Squares by:</p>
+<p><span class="math display">\[ \mathbf{y}(I-Px_1) \mathbf{y} = \mathbf{y}(I-Px_2+Px_2-Px_1) \mathbf{y} \\
+= \mathbf{y}(I-Px_2) \mathbf{y} + \mathbf{y}(Px_2-Px_1) \mathbf{y}\]</span></p>
+<p>Now we can think about this a bit. The second term <span class="math inline">\(\mathbf{y}(Px_2-Px_1) \mathbf{y}\)</span> is describing the amount of Sums of Squares decreases when projected onto the column space of the full design matrix minus the amount of Sums of Squares decreases when projected onto intercept only column space. If we look at the projection matrix for the full model it looks like:</p>
+<pre class="r"><code>X2=matrix(1,nrow=9,ncol=3)
+X2[4:6,2]=0
+X2[7:9,2]= -1
+X2[1:3,3]=0
+X2[7:9,3]=-1
+X2 #Design Matrix</code></pre>
+<pre><code>##       [,1] [,2] [,3]
+##  [1,]    1    1    0
+##  [2,]    1    1    0
+##  [3,]    1    1    0
+##  [4,]    1    0    1
+##  [5,]    1    0    1
+##  [6,]    1    0    1
+##  [7,]    1   -1   -1
+##  [8,]    1   -1   -1
+##  [9,]    1   -1   -1</code></pre>
+<pre class="r"><code>Px2=X2%*% solve(t(X2)%*%X2)%*%t(X2)
+Px2</code></pre>
+<pre><code>##            [,1]      [,2]      [,3]      [,4]      [,5]      [,6]      [,7]
+##  [1,] 0.3333333 0.3333333 0.3333333 0.0000000 0.0000000 0.0000000 0.0000000
+##  [2,] 0.3333333 0.3333333 0.3333333 0.0000000 0.0000000 0.0000000 0.0000000
+##  [3,] 0.3333333 0.3333333 0.3333333 0.0000000 0.0000000 0.0000000 0.0000000
+##  [4,] 0.0000000 0.0000000 0.0000000 0.3333333 0.3333333 0.3333333 0.0000000
+##  [5,] 0.0000000 0.0000000 0.0000000 0.3333333 0.3333333 0.3333333 0.0000000
+##  [6,] 0.0000000 0.0000000 0.0000000 0.3333333 0.3333333 0.3333333 0.0000000
+##  [7,] 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.3333333
+##  [8,] 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.3333333
+##  [9,] 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.3333333
+##            [,8]      [,9]
+##  [1,] 0.0000000 0.0000000
+##  [2,] 0.0000000 0.0000000
+##  [3,] 0.0000000 0.0000000
+##  [4,] 0.0000000 0.0000000
+##  [5,] 0.0000000 0.0000000
+##  [6,] 0.0000000 0.0000000
+##  [7,] 0.3333333 0.3333333
+##  [8,] 0.3333333 0.3333333
+##  [9,] 0.3333333 0.3333333</code></pre>
+<p>That is, our <span class="math inline">\(\hat{y}\)</span> values from the full model are just the group means (as we would expect). The total sums of squares, then, can be thought of as being partitioned into two parts. <span class="math inline">\(\mathbf{y}(Px_2-Px_1) \mathbf{y}\)</span> which is the gain in Sums of Squares by using the full model over the null model, and <span class="math inline">\(\mathbf{y}(I-Px_2) \mathbf{y}\)</span> which is the Sums of Squares Error from the full model.</p>
+<p>Note that in our above calculation there was nothing to stop us from partitioning the Sums of Squares further. Let’s say we had another factor we were interested in testing, then we could write:</p>
+<p><span class="math display">\[ \mathbf{y}(I-Px_1) \mathbf{y} = \mathbf{y}(I-Px_3+Px_3-Px_2+Px_2-Px_1) \mathbf{y} \\
+= \mathbf{y}(I-Px_3) \mathbf{y} + \mathbf{y}(Px_3-Px_2) \mathbf{y}+\mathbf{y}(Px_2-Px_1) \mathbf{y}\]</span></p>
+<p>Now, we have three components. The gain in error from using design matrix 2 compared to the null model <span class="math inline">\(\mathbf{y}(Px_2-Px_1) \mathbf{y}\)</span>, the gain in error from using design matrix 3 comapred to design matrix 2, <span class="math inline">\(\mathbf{y}(Px_3-Px_2) \mathbf{y}\)</span>, and the SSE from using design matrix 3, <span class="math inline">\(\mathbf{y}(I-Px_3) \mathbf{y}\)</span>. Note here we can really see why the Sums of Squares found in this manner are conditional sums of squares. Our Sums of Squares from design matrix 3 is looking at the difference between 3 and 2, etc. In order for the distributional theory to hold the column space of the design matrices must be nested within each one. So, in essence what we are doing are comparing the design matrices formed from the three models:</p>
+<p><span class="math display">\[y_{i,j}=\mu + \epsilon_{i,j}\\
+y_{i,j}=\mu + \alpha_i + \epsilon_{i,j}\\
+y_{i,j}=\mu + \alpha_i + \beta_j + \epsilon_{i,j}\]</span></p>

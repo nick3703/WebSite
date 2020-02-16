@@ -1,0 +1,114 @@
+---
+title: A Linear Algebra Look at ANOVA
+author: Clark
+date: '2020-02-16'
+slug: a-linear-algebra-look-at-anova
+categories:
+  - Linear Model
+tags:
+  - Class
+  - RMarkdown
+description: ''
+---
+
+
+In class a few times I've made reference to the fact that knowing Linear Algebra can help us quite a bit.  Let's take for example the one-way ANOVA model:
+
+$$ y_{i,j} = \mu + \alpha_i+\epsilon_{i,j}$$
+
+Let's say we have a balanced ANOVA, with three groups of three observations per group
+
+We can express this model using matrix notation as:
+
+$$\mathbf{y} = \left[\begin{array}
+{rrr}
+1 & 1 & 0 \\
+1 & 1 & 0 \\
+1 & 1 & 0\\
+1 & 0 & 1 \\
+1 & 0 & 1 \\
+1 & 0 & 1\\
+1 & -1 & -1 \\
+1 & -1 & -1 \\
+1 & -1 & -1
+\end{array}\right]
+\left[\begin{array} 
+{c}
+\mu \\
+\alpha_1\\
+\alpha_2
+\end{array}\right]+ \mathbf{\epsilon}$$
+
+
+
+
+Note that $\alpha_3$ is not present as we have imposed the sum to zero constraint on our effects.  We have, now, a matrix times a vector.  We will refer to our $9\times 3$ matrix as our design matrix, $\mathbf{X}$.  
+
+Note that if our null hypothesis is a true, then our design matrix is just the $9 \times 1$ vector of all $1$ values.  
+
+From any design matrix we can form an orthogonal projection matrix by $P_x=X(X^T X)^{-1} X^T$.  If we form $\hat{y}= P_x y$ we can think of the projection matrix as projecting our $y$ vector onto the column space spanned by the design matrix.
+
+If we want to see how close our $\hat{y}$ is to $y$ we can calculate
+
+$$ (\mathbf{y}-\hat{\mathbf{y}})^T(\mathbf{y}-\hat{\mathbf{y}}) \\
+=(\mathbf{y}-P_x \mathbf{y})^T(\mathbf{y}-P_x \mathbf{y}) \\
+=\mathbf{y}(I-P_x)^T(I-P_x) \mathbf{y}\\
+=\mathbf{y}(I-P_x) \mathbf{y}$$
+
+
+
+Where we note that the last equality is true as our projection matrix is symmetric and idempotent (check this!). 
+
+If we recall that our Total Sums of Squares is just the Sums of Squares from the null model, we can form the projection matrix using the design matrix of the intercept only model as:
+
+```{r}
+X=matrix(1,nrow=9,ncol=1)
+
+Px=X %*% solve(t(X)%*%X)%*%t(X)
+Px
+```
+
+That is, this yields the $9 \times 9$ matrix with every element equal to $1/9$.  If we call this $Px_1$, we note that our total sums of squares can be written as:
+
+$$ (\mathbf{y}- Px_1 \mathbf{y})^T(\mathbf{y}- Px_1 \mathbf{y})\\
+=\mathbf{y}(I-Px_1)^T(I-Px_1) \mathbf{y} \\
+=\mathbf{y}(I-Px_1) \mathbf{y}$$
+
+
+Now, we note we can decompose the Total Sums of Squares by:
+
+$$ \mathbf{y}(I-Px_1) \mathbf{y} = \mathbf{y}(I-Px_2+Px_2-Px_1) \mathbf{y} \\
+= \mathbf{y}(I-Px_2) \mathbf{y} + \mathbf{y}(Px_2-Px_1) \mathbf{y}$$
+
+
+Now we can think about this a bit.  The second term $\mathbf{y}(Px_2-Px_1) \mathbf{y}$ is describing the amount of Sums of Squares decreases when projected onto the column space of the full design matrix minus the amount of Sums of Squares decreases when projected onto intercept only column space.  If we look at the projection matrix for the full model it looks like:
+
+```{r}
+X2=matrix(1,nrow=9,ncol=3)
+X2[4:6,2]=0
+X2[7:9,2]= -1
+X2[1:3,3]=0
+X2[7:9,3]=-1
+X2 #Design Matrix
+Px2=X2%*% solve(t(X2)%*%X2)%*%t(X2)
+Px2
+
+
+```
+
+That is, our $\hat{y}$ values from the full model are just the group means (as we would expect).  The total sums of squares, then, can be thought of as being partitioned into two parts.  $\mathbf{y}(Px_2-Px_1) \mathbf{y}$ which is the gain in Sums of Squares by using the full model over the null model, and $\mathbf{y}(I-Px_2) \mathbf{y}$ which is the Sums of Squares Error from the full model.
+
+Note that in our above calculation there was nothing to stop us from partitioning the Sums of Squares further.  Let's say we had another factor we were interested in testing, then we could write:
+
+
+$$ \mathbf{y}(I-Px_1) \mathbf{y} = \mathbf{y}(I-Px_3+Px_3-Px_2+Px_2-Px_1) \mathbf{y} \\
+= \mathbf{y}(I-Px_3) \mathbf{y} + \mathbf{y}(Px_3-Px_2) \mathbf{y}+\mathbf{y}(Px_2-Px_1) \mathbf{y}$$
+
+
+Now, we have three components.  The gain in error from using design matrix 2 compared to the null model $\mathbf{y}(Px_2-Px_1) \mathbf{y}$, the gain in error from using design matrix 3 comapred to design matrix 2, $\mathbf{y}(Px_3-Px_2) \mathbf{y}$, and the SSE from using design matrix 3, $\mathbf{y}(I-Px_3) \mathbf{y}$.  Note here we can really see why the Sums of Squares found in this manner are conditional sums of squares.  Our Sums of Squares from design matrix 3 is looking at the difference between 3 and 2, etc.  In order for the distributional theory to hold the column space of the design matrices must be nested within each one.  So, in essence what we are doing are comparing the design matrices formed from the three models:
+
+$$y_{i,j}=\mu + \epsilon_{i,j}\\
+y_{i,j}=\mu + \alpha_i + \epsilon_{i,j}\\
+y_{i,j}=\mu + \alpha_i + \beta_j + \epsilon_{i,j}$$
+
+
