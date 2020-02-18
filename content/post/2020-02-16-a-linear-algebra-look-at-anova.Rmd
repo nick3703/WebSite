@@ -52,8 +52,8 @@ If we want to see how close our $\hat{y}$ is to $y$ we can calculate
 
 $$ (\mathbf{y}-\hat{\mathbf{y}})^T(\mathbf{y}-\hat{\mathbf{y}}) \\
 =(\mathbf{y}-P_x \mathbf{y})^T(\mathbf{y}-P_x \mathbf{y}) \\
-=\mathbf{y}(I-P_x)^T(I-P_x) \mathbf{y}\\
-=\mathbf{y}(I-P_x) \mathbf{y}$$
+=\mathbf{y}^T(I-P_x)^T(I-P_x) \mathbf{y}\\
+=\mathbf{y}^T(I-P_x) \mathbf{y}$$
 
 
 
@@ -71,17 +71,17 @@ Px
 That is, this yields the $9 \times 9$ matrix with every element equal to $1/9$.  If we call this $Px_1$, we note that our total sums of squares can be written as:
 
 $$ (\mathbf{y}- Px_1 \mathbf{y})^T(\mathbf{y}- Px_1 \mathbf{y})\\
-=\mathbf{y}(I-Px_1)^T(I-Px_1) \mathbf{y} \\
-=\mathbf{y}(I-Px_1) \mathbf{y}$$
+=\mathbf{y}^T(I-Px_1)^T(I-Px_1) \mathbf{y} \\
+=\mathbf{y}^T(I-Px_1) \mathbf{y}$$
 
 
 Now, we note we can decompose the Total Sums of Squares by:
 
-$$ \mathbf{y}(I-Px_1) \mathbf{y} = \mathbf{y}(I-Px_2+Px_2-Px_1) \mathbf{y} \\
-= \mathbf{y}(I-Px_2) \mathbf{y} + \mathbf{y}(Px_2-Px_1) \mathbf{y}$$
+$$ \mathbf{y}^T(I-Px_1) \mathbf{y} = \mathbf{y}(I-Px_2+Px_2-Px_1) \mathbf{y} \\
+= \mathbf{y}^T(I-Px_2) \mathbf{y} + \mathbf{y}^T(Px_2-Px_1) \mathbf{y}$$
 
 
-Now we can think about this a bit.  The second term $\mathbf{y}(Px_2-Px_1) \mathbf{y}$ is describing the amount of Sums of Squares decreases when projected onto the column space of the full design matrix minus the amount of Sums of Squares decreases when projected onto intercept only column space.  If we look at the projection matrix for the full model it looks like:
+Now we can think about this a bit.  The second term $\mathbf{y}^T(Px_2-Px_1) \mathbf{y}$ is describing the amount of Sums of Squares decreases when projected onto the column space of the full design matrix minus the amount of Sums of Squares decreases when projected onto intercept only column space.  If we look at the projection matrix for the full model it looks like:
 
 ```{r}
 X2=matrix(1,nrow=9,ncol=3)
@@ -101,8 +101,8 @@ That is, our $\hat{y}$ values from the full model are just the group means (as w
 Note that in our above calculation there was nothing to stop us from partitioning the Sums of Squares further.  Let's say we had another factor we were interested in testing, then we could write:
 
 
-$$ \mathbf{y}(I-Px_1) \mathbf{y} = \mathbf{y}(I-Px_3+Px_3-Px_2+Px_2-Px_1) \mathbf{y} \\
-= \mathbf{y}(I-Px_3) \mathbf{y} + \mathbf{y}(Px_3-Px_2) \mathbf{y}+\mathbf{y}(Px_2-Px_1) \mathbf{y}$$
+$$ \mathbf{y}^T(I-Px_1) \mathbf{y} = \mathbf{y}^T(I-Px_3+Px_3-Px_2+Px_2-Px_1) \mathbf{y} \\
+= \mathbf{y}^T(I-Px_3) \mathbf{y} + \mathbf{y}^T(Px_3-Px_2) \mathbf{y}+\mathbf{y}^T(Px_2-Px_1) \mathbf{y}$$
 
 
 Now, we have three components.  The gain in error from using design matrix 2 compared to the null model $\mathbf{y}(Px_2-Px_1) \mathbf{y}$, the gain in error from using design matrix 3 comapred to design matrix 2, $\mathbf{y}(Px_3-Px_2) \mathbf{y}$, and the SSE from using design matrix 3, $\mathbf{y}(I-Px_3) \mathbf{y}$.  Note here we can really see why the Sums of Squares found in this manner are conditional sums of squares.  Our Sums of Squares from design matrix 3 is looking at the difference between 3 and 2, etc.  In order for the distributional theory to hold the column space of the design matrices must be nested within each one.  So, in essence what we are doing are comparing the design matrices formed from the three models:
