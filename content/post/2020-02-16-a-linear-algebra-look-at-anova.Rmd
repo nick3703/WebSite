@@ -96,7 +96,7 @@ Px2
 
 ```
 
-That is, our $\hat{y}$ values from the full model are just the group means (as we would expect).  The total sums of squares, then, can be thought of as being partitioned into two parts.  $\mathbf{y}(Px_2-Px_1) \mathbf{y}$ which is the gain in Sums of Squares by using the full model over the null model, and $\mathbf{y}(I-Px_2) \mathbf{y}$ which is the Sums of Squares Error from the full model.
+That is, our $\hat{y}$ values from the full model are just the group means (as we would expect).  The total sums of squares, then, can be thought of as being partitioned into two parts.  $\mathbf{y}^T(Px_2-Px_1) \mathbf{y}$ which is the gain in Sums of Squares by using the full model over the null model, and $\mathbf{y}^T(I-Px_2) \mathbf{y}$ which is the Sums of Squares Error from the full model.
 
 Note that in our above calculation there was nothing to stop us from partitioning the Sums of Squares further.  Let's say we had another factor we were interested in testing, then we could write:
 
@@ -105,7 +105,7 @@ $$ \mathbf{y}^T(I-Px_1) \mathbf{y} = \mathbf{y}^T(I-Px_3+Px_3-Px_2+Px_2-Px_1) \m
 = \mathbf{y}^T(I-Px_3) \mathbf{y} + \mathbf{y}^T(Px_3-Px_2) \mathbf{y}+\mathbf{y}^T(Px_2-Px_1) \mathbf{y}$$
 
 
-Now, we have three components.  The gain in error from using design matrix 2 compared to the null model $\mathbf{y}(Px_2-Px_1) \mathbf{y}$, the gain in error from using design matrix 3 comapred to design matrix 2, $\mathbf{y}(Px_3-Px_2) \mathbf{y}$, and the SSE from using design matrix 3, $\mathbf{y}(I-Px_3) \mathbf{y}$.  Note here we can really see why the Sums of Squares found in this manner are conditional sums of squares.  Our Sums of Squares from design matrix 3 is looking at the difference between 3 and 2, etc.  In order for the distributional theory to hold the column space of the design matrices must be nested within each one.  So, in essence what we are doing are comparing the design matrices formed from the three models:
+Now, we have three components.  The gain in error from using design matrix 2 compared to the null model $\mathbf{y}^T(Px_2-Px_1) \mathbf{y}$, the gain in error from using design matrix 3 comapred to design matrix 2, $\mathbf{y}^T(Px_3-Px_2) \mathbf{y}$, and the SSE from using design matrix 3, $\mathbf{y}^T(I-Px_3) \mathbf{y}$.  Note here we can really see why the Sums of Squares found in this manner are conditional sums of squares.  Our Sums of Squares from design matrix 3 is looking at the difference between 3 and 2, etc.  In order for the distributional theory to hold the column space of the design matrices must be nested within each one.  So, in essence what we are doing are comparing the design matrices formed from the three models:
 
 $$y_{i,j}=\mu + \epsilon_{i,j}\\
 y_{i,j}=\mu + \alpha_i + \epsilon_{i,j}\\
