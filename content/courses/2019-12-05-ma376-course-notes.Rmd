@@ -76,3 +76,8 @@ library(tidyverse)
 [Lesson 12](https://github.com/nick3703/MA376/blob/master/Lsn-12.pdf)
 
 [Lesson 12 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn%2012.Rmd)
+
+
+[Lesson 13](https://github.com/nick3703/MA376/blob/master/Lsn13.pdf)
+
+[Lesson 13 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn13.Rmd)
