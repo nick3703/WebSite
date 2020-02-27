@@ -85,3 +85,9 @@ library(tidyverse)
 [Lesson 14](https://github.com/nick3703/MA376/blob/master/Lsn14.pdf)
 
 [Lesson 14 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn14.Rmd)
+
+[Lesson 15](https://github.com/nick3703/MA376/blob/master/Lsn15.pdf)
+
+[Lesson 15 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn15.Rmd)
+
+[Lesson 15 R Only](https://github.com/nick3703/MA376/blob/master/Lsn15.R)
