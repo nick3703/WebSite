@@ -1,0 +1,678 @@
+---
+title: Daily Cases
+author: Clark
+date: '2020-03-15'
+slug: daily-cases
+categories: []
+tags: []
+description: ''
+---
+
+
+
+<p>Place Holder</p>
+<pre class="r"><code>current.data&lt;-read_csv(&quot;https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   .default = col_double(),
+##   `Province/State` = col_character(),
+##   `Country/Region` = col_character()
+## )</code></pre>
+<pre><code>## See spec(...) for full column specifications.</code></pre>
+<pre class="r"><code>us.dat&lt;-current.data %&gt;% filter(`Country/Region`==&quot;US&quot;)
+
+us.sum&lt;-us.dat %&gt;% select(-`Country/Region`,-Lat,-Long)
+states.only&lt;-us.sum[1:52,]
+
+names(states.only)</code></pre>
+<pre><code>##  [1] &quot;Province/State&quot; &quot;1/22/20&quot;        &quot;1/23/20&quot;        &quot;1/24/20&quot;       
+##  [5] &quot;1/25/20&quot;        &quot;1/26/20&quot;        &quot;1/27/20&quot;        &quot;1/28/20&quot;       
+##  [9] &quot;1/29/20&quot;        &quot;1/30/20&quot;        &quot;1/31/20&quot;        &quot;2/1/20&quot;        
+## [13] &quot;2/2/20&quot;         &quot;2/3/20&quot;         &quot;2/4/20&quot;         &quot;2/5/20&quot;        
+## [17] &quot;2/6/20&quot;         &quot;2/7/20&quot;         &quot;2/8/20&quot;         &quot;2/9/20&quot;        
+## [21] &quot;2/10/20&quot;        &quot;2/11/20&quot;        &quot;2/12/20&quot;        &quot;2/13/20&quot;       
+## [25] &quot;2/14/20&quot;        &quot;2/15/20&quot;        &quot;2/16/20&quot;        &quot;2/17/20&quot;       
+## [29] &quot;2/18/20&quot;        &quot;2/19/20&quot;        &quot;2/20/20&quot;        &quot;2/21/20&quot;       
+## [33] &quot;2/22/20&quot;        &quot;2/23/20&quot;        &quot;2/24/20&quot;        &quot;2/25/20&quot;       
+## [37] &quot;2/26/20&quot;        &quot;2/27/20&quot;        &quot;2/28/20&quot;        &quot;2/29/20&quot;       
+## [41] &quot;3/1/20&quot;         &quot;3/2/20&quot;         &quot;3/3/20&quot;         &quot;3/4/20&quot;        
+## [45] &quot;3/5/20&quot;         &quot;3/6/20&quot;         &quot;3/7/20&quot;         &quot;3/8/20&quot;        
+## [49] &quot;3/9/20&quot;         &quot;3/10/20&quot;        &quot;3/11/20&quot;        &quot;3/12/20&quot;       
+## [53] &quot;3/13/20&quot;        &quot;3/14/20&quot;</code></pre>
+<pre class="r"><code>Total.Cases&lt;-rowSums(states.only[,-1])
+
+daily.update&lt;-cbind(states.only[,1],states.only[,(ncol(states.only)-1)],states.only[,ncol(states.only)])
+
+daily.update.mod&lt;-daily.update %&gt;% mutate(State = `Province/State`,`Num Cases`=daily.update[,3],`Last 24`=daily.update[,3]-daily.update[,2])%&gt;%
+  select(State,`Num Cases`,`Last 24`)
+
+a&lt;-daily.update.mod
+t1 = a[1:(nrow(a)/3),]
+t2 = a[(nrow(a)/3+1):(2*nrow(a)/3),]
+t3 = a[(2*nrow(a)/3+1):nrow(a),]
+x_html&lt;-knitr::kable(list(t1,t2,t3),&quot;html&quot;,row.names = FALSE)
+x_html</code></pre>
+<table class="kable_wrapper">
+<tbody>
+<tr>
+<td>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+State
+</th>
+<th style="text-align:right;">
+Num Cases
+</th>
+<th style="text-align:right;">
+Last 24
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Washington
+</td>
+<td style="text-align:right;">
+572
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+New York
+</td>
+<td style="text-align:right;">
+525
+</td>
+<td style="text-align:right;">
+104
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+California
+</td>
+<td style="text-align:right;">
+340
+</td>
+<td style="text-align:right;">
+58
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Massachusetts
+</td>
+<td style="text-align:right;">
+138
+</td>
+<td style="text-align:right;">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Diamond Princess
+</td>
+<td style="text-align:right;">
+46
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Grand Princess
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Georgia
+</td>
+<td style="text-align:right;">
+66
+</td>
+<td style="text-align:right;">
+24
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Colorado
+</td>
+<td style="text-align:right;">
+101
+</td>
+<td style="text-align:right;">
+52
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Florida
+</td>
+<td style="text-align:right;">
+76
+</td>
+<td style="text-align:right;">
+26
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+New Jersey
+</td>
+<td style="text-align:right;">
+69
+</td>
+<td style="text-align:right;">
+40
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Oregon
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Texas
+</td>
+<td style="text-align:right;">
+57
+</td>
+<td style="text-align:right;">
+14
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Illinois
+</td>
+<td style="text-align:right;">
+64
+</td>
+<td style="text-align:right;">
+18
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Pennsylvania
+</td>
+<td style="text-align:right;">
+47
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Iowa
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Maryland
+</td>
+<td style="text-align:right;">
+26
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+North Carolina
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+7
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+State
+</th>
+<th style="text-align:right;">
+Num Cases
+</th>
+<th style="text-align:right;">
+Last 24
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+South Carolina
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tennessee
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Virginia
+</td>
+<td style="text-align:right;">
+41
+</td>
+<td style="text-align:right;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arizona
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Indiana
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kentucky
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+District of Columbia
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nevada
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+New Hampshire
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Minnesota
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nebraska
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ohio
+</td>
+<td style="text-align:right;">
+26
+</td>
+<td style="text-align:right;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rhode Island
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wisconsin
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Connecticut
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hawaii
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Oklahoma
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+State
+</th>
+<th style="text-align:right;">
+Num Cases
+</th>
+<th style="text-align:right;">
+Last 24
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Utah
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kansas
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Louisiana
+</td>
+<td style="text-align:right;">
+77
+</td>
+<td style="text-align:right;">
+41
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Missouri
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Vermont
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Alaska
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Arkansas
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Delaware
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Idaho
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Maine
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Michigan
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mississippi
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Montana
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+New Mexico
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+North Dakota
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+South Dakota
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+West Virginia
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
