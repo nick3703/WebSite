@@ -27,7 +27,7 @@ us.dat<-current.data %>% filter(`Country/Region`=="US")
 us.sum<-us.dat %>% select(-`Country/Region`,-Lat,-Long)
 states.only<-us.sum[1:52,]
 
-names(states.only)
+#names(states.only)
 
 Total.Cases<-rowSums(states.only[,-1])
 
