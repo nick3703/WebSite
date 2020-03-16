@@ -9,12 +9,19 @@ description: ''
 ---
 
 
-Place Holder
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(kableExtra)
+library(lubridate)
+```
+
+Current as of:
+
+```{r}
+today()
 ```
 
 

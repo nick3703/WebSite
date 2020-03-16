@@ -10,7 +10,9 @@ description: ''
 
 
 
-<p>Place Holder</p>
+<p>Current as of:</p>
+<pre class="r"><code>today()</code></pre>
+<pre><code>## [1] &quot;2020-03-16&quot;</code></pre>
 <pre class="r"><code>current.data&lt;-read_csv(&quot;https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv&quot;)</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
@@ -63,10 +65,10 @@ Last 24
 Washington
 </td>
 <td style="text-align:right;">
-572
+643
 </td>
 <td style="text-align:right;">
-4
+71
 </td>
 </tr>
 <tr>
@@ -74,10 +76,10 @@ Washington
 New York
 </td>
 <td style="text-align:right;">
-525
+732
 </td>
 <td style="text-align:right;">
-104
+207
 </td>
 </tr>
 <tr>
@@ -85,10 +87,10 @@ New York
 California
 </td>
 <td style="text-align:right;">
-340
+426
 </td>
 <td style="text-align:right;">
-58
+86
 </td>
 </tr>
 <tr>
@@ -96,10 +98,10 @@ California
 Massachusetts
 </td>
 <td style="text-align:right;">
-138
+164
 </td>
 <td style="text-align:right;">
-15
+26
 </td>
 </tr>
 <tr>
@@ -129,10 +131,10 @@ Grand Princess
 Georgia
 </td>
 <td style="text-align:right;">
-66
+99
 </td>
 <td style="text-align:right;">
-24
+33
 </td>
 </tr>
 <tr>
@@ -140,10 +142,10 @@ Georgia
 Colorado
 </td>
 <td style="text-align:right;">
-101
+131
 </td>
 <td style="text-align:right;">
-52
+30
 </td>
 </tr>
 <tr>
@@ -151,10 +153,10 @@ Colorado
 Florida
 </td>
 <td style="text-align:right;">
-76
+115
 </td>
 <td style="text-align:right;">
-26
+39
 </td>
 </tr>
 <tr>
@@ -162,10 +164,10 @@ Florida
 New Jersey
 </td>
 <td style="text-align:right;">
-69
+98
 </td>
 <td style="text-align:right;">
-40
+29
 </td>
 </tr>
 <tr>
@@ -173,10 +175,10 @@ New Jersey
 Oregon
 </td>
 <td style="text-align:right;">
-32
+36
 </td>
 <td style="text-align:right;">
-2
+4
 </td>
 </tr>
 <tr>
@@ -184,10 +186,10 @@ Oregon
 Texas
 </td>
 <td style="text-align:right;">
-57
+72
 </td>
 <td style="text-align:right;">
-14
+15
 </td>
 </tr>
 <tr>
@@ -195,10 +197,10 @@ Texas
 Illinois
 </td>
 <td style="text-align:right;">
-64
+93
 </td>
 <td style="text-align:right;">
-18
+29
 </td>
 </tr>
 <tr>
@@ -206,10 +208,10 @@ Illinois
 Pennsylvania
 </td>
 <td style="text-align:right;">
-47
+66
 </td>
 <td style="text-align:right;">
-6
+19
 </td>
 </tr>
 <tr>
@@ -217,10 +219,10 @@ Pennsylvania
 Iowa
 </td>
 <td style="text-align:right;">
-17
+18
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 </tr>
 <tr>
@@ -228,10 +230,10 @@ Iowa
 Maryland
 </td>
 <td style="text-align:right;">
-26
+32
 </td>
 <td style="text-align:right;">
-8
+6
 </td>
 </tr>
 <tr>
@@ -239,10 +241,10 @@ Maryland
 North Carolina
 </td>
 <td style="text-align:right;">
-24
+33
 </td>
 <td style="text-align:right;">
-7
+9
 </td>
 </tr>
 </tbody>
@@ -269,10 +271,10 @@ Last 24
 South Carolina
 </td>
 <td style="text-align:right;">
-19
+28
 </td>
 <td style="text-align:right;">
-6
+9
 </td>
 </tr>
 <tr>
@@ -280,10 +282,10 @@ South Carolina
 Tennessee
 </td>
 <td style="text-align:right;">
-32
+39
 </td>
 <td style="text-align:right;">
-6
+7
 </td>
 </tr>
 <tr>
@@ -291,62 +293,7 @@ Tennessee
 Virginia
 </td>
 <td style="text-align:right;">
-41
-</td>
-<td style="text-align:right;">
-11
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Arizona
-</td>
-<td style="text-align:right;">
-12
-</td>
-<td style="text-align:right;">
-3
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Indiana
-</td>
-<td style="text-align:right;">
-16
-</td>
-<td style="text-align:right;">
-3
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Kentucky
-</td>
-<td style="text-align:right;">
-14
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-District of Columbia
-</td>
-<td style="text-align:right;">
-10
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Nevada
-</td>
-<td style="text-align:right;">
-21
+45
 </td>
 <td style="text-align:right;">
 4
@@ -354,51 +301,29 @@ Nevada
 </tr>
 <tr>
 <td style="text-align:left;">
-New Hampshire
-</td>
-<td style="text-align:right;">
-7
-</td>
-<td style="text-align:right;">
-1
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Minnesota
-</td>
-<td style="text-align:right;">
-21
-</td>
-<td style="text-align:right;">
-7
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Nebraska
-</td>
-<td style="text-align:right;">
-14
-</td>
-<td style="text-align:right;">
-1
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Ohio
-</td>
-<td style="text-align:right;">
-26
+Arizona
 </td>
 <td style="text-align:right;">
 13
 </td>
+<td style="text-align:right;">
+1
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Rhode Island
+Indiana
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kentucky
 </td>
 <td style="text-align:right;">
 20
@@ -409,21 +334,65 @@ Rhode Island
 </tr>
 <tr>
 <td style="text-align:left;">
-Wisconsin
+District of Columbia
 </td>
 <td style="text-align:right;">
-27
+16
 </td>
 <td style="text-align:right;">
-8
+6
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Connecticut
+Nevada
 </td>
 <td style="text-align:right;">
-22
+24
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+New Hampshire
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Minnesota
+</td>
+<td style="text-align:right;">
+35
+</td>
+<td style="text-align:right;">
+14
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nebraska
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ohio
+</td>
+<td style="text-align:right;">
+37
 </td>
 <td style="text-align:right;">
 11
@@ -431,10 +400,43 @@ Connecticut
 </tr>
 <tr>
 <td style="text-align:left;">
+Rhode Island
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wisconsin
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Connecticut
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 Hawaii
 </td>
 <td style="text-align:right;">
-4
+6
 </td>
 <td style="text-align:right;">
 2
@@ -445,10 +447,10 @@ Hawaii
 Oklahoma
 </td>
 <td style="text-align:right;">
-4
+7
 </td>
 <td style="text-align:right;">
-2
+3
 </td>
 </tr>
 </tbody>
@@ -475,10 +477,10 @@ Last 24
 Utah
 </td>
 <td style="text-align:right;">
-10
+28
 </td>
 <td style="text-align:right;">
-1
+18
 </td>
 </tr>
 <tr>
@@ -489,7 +491,7 @@ Kansas
 8
 </td>
 <td style="text-align:right;">
-3
+0
 </td>
 </tr>
 <tr>
@@ -497,10 +499,10 @@ Kansas
 Louisiana
 </td>
 <td style="text-align:right;">
-77
+91
 </td>
 <td style="text-align:right;">
-41
+14
 </td>
 </tr>
 <tr>
@@ -508,10 +510,10 @@ Louisiana
 Missouri
 </td>
 <td style="text-align:right;">
-4
+5
 </td>
 <td style="text-align:right;">
-2
+1
 </td>
 </tr>
 <tr>
@@ -519,7 +521,7 @@ Missouri
 Vermont
 </td>
 <td style="text-align:right;">
-5
+8
 </td>
 <td style="text-align:right;">
 3
@@ -541,73 +543,7 @@ Alaska
 Arkansas
 </td>
 <td style="text-align:right;">
-12
-</td>
-<td style="text-align:right;">
-6
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Delaware
-</td>
-<td style="text-align:right;">
-6
-</td>
-<td style="text-align:right;">
-2
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Idaho
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Maine
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-2
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Michigan
-</td>
-<td style="text-align:right;">
-25
-</td>
-<td style="text-align:right;">
-9
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Mississippi
-</td>
-<td style="text-align:right;">
-6
-</td>
-<td style="text-align:right;">
-5
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Montana
-</td>
-<td style="text-align:right;">
-5
+16
 </td>
 <td style="text-align:right;">
 4
@@ -615,13 +551,79 @@ Montana
 </tr>
 <tr>
 <td style="text-align:left;">
-New Mexico
+Delaware
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Idaho
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Maine
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Michigan
+</td>
+<td style="text-align:right;">
+33
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mississippi
 </td>
 <td style="text-align:right;">
 10
 </td>
 <td style="text-align:right;">
-0
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Montana
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+New Mexico
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+3
 </td>
 </tr>
 <tr>
@@ -643,7 +645,7 @@ South Dakota
 9
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 </tr>
 <tr>
