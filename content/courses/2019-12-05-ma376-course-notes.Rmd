@@ -109,3 +109,9 @@ library(tidyverse)
 [Lesson 18 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn18.Rmd)
 
 [Lesson 18 R Only](https://github.com/nick3703/MA376/blob/master/Lsn18.R)
+
+[Lesson 18](https://github.com/nick3703/MA376/blob/master/Lsn19.pdf)
+
+[Lesson 19 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn19.Rmd)
+
+[Lesson 19 R Only](https://github.com/nick3703/MA376/blob/master/Lsn19.R)
