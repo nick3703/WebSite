@@ -121,3 +121,5 @@ library(tidyverse)
 [Lesson 21 Rmd](https://github.com/nick3703/MA376/blob/master/Lsn21.Rmd)
 
 [Lesson 21 R Only](https://github.com/nick3703/MA376/blob/master/Lsn21.R)
+
+[Lesson 22 Pdf](https://github.com/nick3703/MA376/blob/master/Lsn_22_2020.pdf)
