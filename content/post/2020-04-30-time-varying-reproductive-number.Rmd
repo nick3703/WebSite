@@ -1,0 +1,392 @@
+---
+title: Time Varying Reproductive Number
+author: Clark
+date: '2020-04-30'
+slug: time-varying-reproductive-number
+categories: []
+tags: []
+description: ''
+---
+
+
+
+Note that this analysis draws heavily from Nishiura and Chowell, 2009.
+
+## Shortcomings of SIR Framework
+
+To avoid confusion we follow Nishiura and Chowell and refer to $S_t$ as the number of suceptible individuals at time $t$, $I_t$ as the number of infected individuals at time $t$ and $U_t$ as the number of individuals removed from the population (either no longer suceptible or deceased) at time $t$.
+
+The general SIR framework assumes that at time $t$ the population can be segmented into these three categories and is given by a system of differential equations:
+
+\begin{align*}
+ \frac{dS}{dt}&= -\frac{\beta I_t S_t}{N}\\
+ \frac{dI}{dT}&= \frac{\beta I_t S_t}{N}-\gamma I_t\\
+ \frac{dU}{dt}&= \gamma I_t
+\end{align*}
+
+Here we play a bit fast and loose with the models as we could further could compartmentalize the population into an SEIR model, or a model with a deceased state, but the general framework remains the same.  
+
+Here we focus on the parameter $\beta$, which has the general meaning of average number of contacts a suceptible person has.  $\beta$ can be further decomposed into, $\beta = R_0 \gamma$ where $\gamma$ is the rate that Infected people are removed from the population.  For the purpose of our analysis we fix $\gamma$ and concentrate on $R_0$, which is often called the basic reproduction number of the virus.  $R_0$ has received much attention and can be thought of as the number of new infections that can be caused by an individual with the illness.  In simple terms, if this number is bigger than 1 the number of people in the population will continue to grow until herd immunity starts to kick in and if this number is smaller than 1 the virus will shrink.
+
+The issue is, SIR and related models are extremely sensitive to $R_0$.  For instance, below we show the difference in New York City in the number of infected people ranging $R_0$ from 3 (blue line) to 2 (green line)
+
+
+```{r,echo=FALSE, warning=FALSE,message=FALSE}
+#install.packages("deSolve")
+#install.packages("tidyverse")
+
+library(deSolve) #Needed for solving DEs
+library(tidyverse)
+library(scales)
+#SEIR Model
+seir_equations <- function(time, variables, parameters) {
+  with(as.list(c(variables, parameters)), {
+    dS <- -S/N*(R0/DI*I)
+    dE <- S/N*(R0/DI*I)-E/DE
+    dI <-  E/DE-I/DI
+    return(list(c(dS, dE,dI)))
+  })
+}
+
+#Parameter Values
+parameters_values <- c(
+  N = 9000000, #Total Populatin
+  R0 = 3, #R0 value
+  DI = 7, #Infectious Period
+  DE = 5 #Incubation Period
+)
+
+initial_values <- c(
+  S = 9000000-2000-1000,# number of susceptibles at time = 0
+  E = 2000, # number of exposed at time = 0
+  I =   1000 # number of infectious at time = 0
+)
+
+time_values <- seq(0, 150)
+
+
+sir_values_1 <- ode(
+  y = initial_values,
+  times = time_values,
+  func = seir_equations,
+  parms = parameters_values 
+)
+
+
+
+sir.df<-as.data.frame(sir_values_1)
+
+sir.df <- sir.df %>% mutate(R0="3")
+#sir.df%>%ggplot(aes(x=time,y=I))+geom_line()
+
+
+##
+
+
+parameters_values <- c(
+  N = 8600000, #Total Populatin
+  R0 = 2.5, #R0 value
+  DI = 7, #Infectious Period
+  DE = 5 #Incubation Period
+)
+
+
+time_values <- seq(0, 150)
+
+
+sir_values_1 <- ode(
+  y = initial_values,
+  times = time_values,
+  func = seir_equations,
+  parms = parameters_values 
+)
+
+
+
+sir2.df<-as.data.frame(sir_values_1)
+
+sir2.df <- sir2.df %>% mutate(R0="2.5")
+
+full.df <- rbind(sir.df,sir2.df)
+
+
+##
+
+
+parameters_values <- c(
+  N = 8600000, #Total Populatin
+  R0 = 2, #R0 value
+  DI = 7, #Infectious Period
+  DE = 5 #Incubation Period
+)
+
+
+time_values <- seq(0, 150)
+
+
+sir_values_1 <- ode(
+  y = initial_values,
+  times = time_values,
+  func = seir_equations,
+  parms = parameters_values 
+)
+
+
+
+sir3.df<-as.data.frame(sir_values_1)
+
+sir3.df <- sir3.df %>% mutate(R0="2")
+
+full.df <- rbind(sir.df,sir2.df,sir3.df)
+
+
+options(scipen=1000000)
+
+sir.df%>%ggplot(aes(x=time,y=I))+geom_line(lwd=1.5,color="blue")+
+  labs(y="Number of Infected People",x="Days After 1000 Infections Observed")+
+  theme_bw()+theme(axis.text=element_text(size=16),
+                   axis.title=element_text(size=18,face="bold"))+
+  geom_line(aes(x=time,y=I),data=sir2.df,lwd=1.5)+
+  geom_line(aes(x=time,y=I),data=sir3.df,color="green",lwd=1.5)+ 
+  scale_y_continuous(labels = scales::comma)
+```
+ 
+Here we see that a difference in 1 $R_0$ corresponds to a difference in over half a million infected as well as a difference in a peak day of over a month.
+
+While a useful projeciton framework for thinking about the baseline characteristics of the virus, this isn't helpful in forecasting what actually happens.
+
+To see what actually happens we need to see what the effective $R_t$ of the virus is.  Going back to the physical interpretation of $\beta$, when society does things to impact the amount of  interactions between individuals, we can, and should, expect $\beta$ to decrease, or in other words to expect $R_t$ to decrease.
+
+In order to do this we need a way to estimate $R_t$.  We refer to $\hat{R}_t$ as our empirical estimate of $R_t$ and, following Nishiura and Chowell, 2009, we note this can be estimated (eq. 33) via:
+
+\begin{align*}
+\hat{R}_t &= \frac{j_t}{\sum_{j=0}^n j_{t-j} w_j}
+\end{align*}
+
+Where here $j_t$ are the number of new cases observed on day $t$ and $w$ is the disretized generation time distribution.  Note that the generation time distribution can be thought of as the expected time between the emergence of a secondary case after a primary case is observed.
+
+For COVID-19, initial work done by  Nishiura, Lintona, and Akhmetzhanov's (2020) "Serial interval of novel coronavirus (COVID-19) infections" provides a more extensive analysis of the generation time distribution. In their analysis, "the median serial interval of the best-fit Weibull distribution model was estimated at with a mean and SD of 4.8 days and 2.3 days."
+
+Note that this a model assumption that captures the parameter assumptions in the orignal SIR framework.  In otherwords, if we know the generation time distribution and all we are interested in is predicting new cases we don't need $\gamma$.
+
+Applying the above estimates for $\hat{R}_t$ for Italy using the `library(R0)` we can run
+
+```{r,warning=FALSE,message=FALSE}
+library(R0)
+full.data<-read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv")
+mGT <- generation.time("weibull", c(4.3,2.3)) 
+Italy<-full.data%>%filter(`Country/Region`=="Italy",is.na(`Province/State`))%>%
+  dplyr::select(-`Province/State`,-`Country/Region`,-Lat,-Long)
+vec<-as.numeric(Italy)
+daily<-diff(vec)+1
+daily[50:51]<-daily[51]/2  #something weird with this day, assume
+#lag in reporting combining two days
+et<-as.numeric(length(daily))
+R.vals.Ital<-est.R0.TD(daily,mGT,begin=48,end=et-1)
+plot(R.vals.Ital)
+```
+
+Here we see that the $R_t$ drops *below* 1.  This is significant because once $R_t$ drops below 1 the country has peaked regardless of what the SIR model or SEIR model initially projects.  
+
+This suggests that any SIR or SEIR model used relying on a fixed $R_0$ value will overpredict, potentially significantly.
+
+For example, New York City dropped below 1 for a sustained amount of time on April 12th, 22 days after their lock down started.
+
+In order to use $\hat{R}_t$ in predicting, we need to not only understand what $\hat{R}_t$ is, we also need to understand where $\hat{R}_t$ will be for future $t$ values.  In order to do this we propose a parametric modeling technique.  
+
+The model we propose is:
+
+\begin{align*}
+\log(\nu_t)&= \beta_0 + \beta_1 t\\
+\hat{R}_t & \sim Gamma(\nu_t,\phi \nu_t^2)
+\end{align*}
+
+Note above we parameterize the Gamma distribution using mean and variance parameterization.  Essentially we use a GLM with a log link.  Notable given $\beta_0$ and $\beta_1$ we can use $E[\hat{R}_{t+j}]$ to esimate what future $\hat{R}_{t+j}$ values will be.
+
+Once we have the model framework, we propose the following to predict future values.
+
+For each geographical area of interest
+
+ - Define $t_n$ as current time
+ - Define $I_t$ as the new observed cases for $t = 1, \cdots, t_n$
+ - Use the observed $\hat{R}_t$ values to estimate $\hat{\beta}_0$ and $\hat{\beta}_1$
+ - Use $\hat{\beta}_0$ and $\hat{\beta}_1$ to generate, for $t = 1, \cdots,t_n,\cdots,T$ model based $R_t$ values, we refer to as $R^*_t$
+ - For $t = 1, \cdots, t_n$ Calculate $R^*_t\times I_t \times p(w)$ where $p(w)$ is the pmf for the discretized generational distribution, in our case a discretized weibull with mean 4.3 and SD 2.3
+ 
+Note that this creates a vector of when we would expect future cases to manifest.  To give an example,if we observe 100 new cases and $R^*_t=.8$ we would see 80 new cases manifest 
+
+```{r,message=FALSE,warning=FALSE}
+library(mixdist)
+library(extraDistr)
+#Create generating distribution
+mGT.params<-weibullpar(4.8, 2.3, loc = 0)
+alpha<-mGT.params[2] # called shape in weibullpar, alpha in a discrete Weilbull
+beta<-mGT.params[1] # called scale in weibullpar, beta in a discrete Weibull.
+q<-exp(-as.numeric(alpha)^(-as.numeric(beta)))
+#Discretize Weibull via the extraDistr package's ddweibull function
+w<- ddweibull(1:10, as.numeric(q), as.numeric(beta))
+
+100*.8*w
+```
+
+Here we see that 6.5 would be on day 1, 10.6 on day 2, 13.0 on day 3, etc.
+
+
+However, in our algorithm we won't use those projections until we are at $t=t_n$  For $t> t_n$ we use the projected totals on that given day to generate future days.
+
+In order to impliment this fully, though, we need to keep in mind that $\hat{R}_t$ is backwards calculated, meaning it doesn't give what today is going to produce, but rather what produced today.  In order to correct this, we propse skipping forward 4 days in the $R^*_t$ curve.
+
+Full code to calculate this for each state is included below.
+
+```{r,message=FALSE,warning=FALSE,eval=FALSE}
+
+
+library(tidyverse)
+library(extraDistr)
+library(mixdist) #used to recoved the Weibull parameters from the mean and sd
+library(ciTools)
+library(lubridate)
+
+
+#This function accepts the cumulative confirmed COVID-19 cases by county by day.
+#It then estimates R(t) for that county by day.
+rt.func.v3_dusty<-function(dat,mean.Weibull=4.8,sd.Weibull=2.3){
+  r.vals<-c()
+  confirmed = dat$confirmed
+  #get the Weibull parameters from mixdist's weibullpar function
+  mGT.params<-weibullpar(mean.Weibull, sd.Weibull, loc = 0)
+  alpha<-mGT.params[2] # called shape in weibullpar, alpha in a discrete Weilbull
+  beta<-mGT.params[1] # called scale in weibullpar, beta in a discrete Weibull
+  #the extraDistr package uses an altrnative parameterization of the Weibull (q, beta) from
+  #Nakagawa and Osaki (1975) where q = exp(-alpha^-beta), so...
+  q<-exp(-as.numeric(alpha)^(-as.numeric(beta)))
+  #Discretize Weibull via the extraDistr package's ddweibull function
+  w<- ddweibull(0:1000, as.numeric(q), as.numeric(beta), log = FALSE)
+  df<-data.frame(counts=t(c(0,confirmed)))
+  # df<-data.frame(counts=t(dat[-(1:4)]))
+  # first.case.index<-min(which(df>0))
+  # total.cases<-max(df)
+  growth<-diff(unlist(df))
+  # growth<-diff(df$counts)
+  growth<-pmax(growth, 0) # eliminate any erroneous downward shifts in the cumulative counts
+  #Estimate R(t) from equation (33) of Nishiura and Chowell (2009)
+  for(k in 2:length(growth)){
+    r.vals[k-1]<-growth[k]/(sum(growth[1:k]*rev(w[1:k])))
+  }
+  r_val_df <- tibble(
+    day = 1:length(r.vals), 
+    r.vals = r.vals, 
+    daily_new_cases = growth[-1])
+  return(r_val_df)
+}
+
+
+jhu_all<-read_csv("https://raw.githubusercontent.com/nick3703/Parametric-Modeling-for-Time-Varying-Reproducibility-Number/master/2020-04-30_JHU.csv")
+
+state.names<-read_csv("https://raw.githubusercontent.com/nick3703/Parametric-Modeling-for-Time-Varying-Reproducibility-Number/master/StateNames.csv")
+
+
+jhu_all<-jhu_all%>%mutate(date=as.Date(date,format="%m/%d/%Y"))
+
+jhu_state<-jhu_all %>% group_by(province_state,date)%>%
+  summarize(confirmed=sum(confirmed))
+
+
+rt_est <- 
+  jhu_state %>% ## cases confirmed by fips
+  group_by(province_state) %>% 
+  nest() %>%  ## one row per fips with nested df of confirmed cases
+  mutate(ans = map(data, rt.func.v3_dusty)) %>% ## applies the rt function to each dataframe
+  unnest(ans) ## expands back to one dataframe
+
+
+rt_est_wide<-rt_est%>%pivot_wider(id_cols=province_state,names_from = day,values_from = r.vals)
+
+rt_est<-rt_est%>%
+  filter(province_state %in%state.names$State)
+
+list_states<-unique(rt_est$province_state)
+
+output<-data.frame(state=NA,b0=NA,b1=NA,ucb=NA,curr.r=NA,
+                   curr.emp.r=NA)
+
+state<-rt_est%>%filter(province_state=="New York") #Just getting rowsize here
+cols.needed<-length(state$daily_new_cases)
+
+new.cases<-matrix(0,nrow=length(unique(rt_est$province_state)),ncol=cols.needed)
+
+
+for(j in 1:length(list_states)){
+  state<-rt_est%>%filter(province_state==list_states[j])
+  output[j,]$state=list_states[j]
+  # Fit models with Gamma errors
+  gam.glm <- glm(r.vals+.01~day, family = Gamma(link = "log"),data=state)
+  coefs<-gam.glm$coefficients
+  output[j,]$b0=coefs[1]
+  output[j,]$b1=coefs[2]
+  df = data.frame(day = state$day, r.vals = state$r.vals)   # Note can add new data here if desired
+  df1 <- df %>%
+    add_ci(gam.glm, names = c("lwr","upr")) %>%
+    add_pi(gam.glm, names = c("plwr","pupr"))%>%
+    mutate(type = "parametric")
+  output[j,]$ucb=df1[nrow(df1),]$upr
+  output[j,]$curr.r<-df1[nrow(df1),]$pred
+  output[j,]$curr.emp.r<-df1[nrow(df1),]$r.vals
+
+
+  output<-output%>%mutate(current.rt=exp(b0+b1*max(rt_est$day)))
+
+  new.cases[j,]<-state$daily_new_cases
+
+
+}
+
+
+
+#######################################################
+
+#Create generating distribution
+mGT.params<-weibullpar(4.8, 2.3, loc = 0)
+alpha<-mGT.params[2] # called shape in weibullpar, alpha in a discrete Weilbull
+beta<-mGT.params[1] # called scale in weibullpar, beta in a discrete Weibull.
+q<-exp(-as.numeric(alpha)^(-as.numeric(beta)))
+#Discretize Weibull via the extraDistr package's ddweibull function
+w<- ddweibull(0:10, as.numeric(q), as.numeric(beta))
+
+
+
+
+#March 22nd start corresponds to day 60 from dataset
+us.df<-data.frame(day=NA,pred=NA,state=NA)
+collection.of.states<-unique(output$state)
+
+for(i in 1:length(collection.of.states)){
+  state.df<-data.frame(day=seq(lubridate::today(),lubridate::today()+14,by='days'),pred=NA,state=NA)
+  b0<-output[i,]$b0 
+  b1<-output[i,]$b1
+  t<-seq(5,67,1) #skip forward mean of Weibull on average as
+  #R(t) is what GOT us here, not where we're going
+  
+  r.vals<-exp(b0+b1*t) #R val function
+  cases<-new.cases[i,]
+  pred.vals<-matrix(0,nrow=100,ncol=1)
+  place.hold<-pred.vals
+  
+  for(j in 1:(length(cases)+14)){
+    if(j<= length(cases)){ #If we have data, use data
+      place.hold<-matrix(0,nrow=100,ncol=1)
+      place.hold[(j+1):(j+11)]<-r.vals[j]*cases[j]*w
+      pred.vals<-pred.vals+place.hold
+    }else{ #Else use projections
+      place.hold<-matrix(0,nrow=100,ncol=1)
+      place.hold[(j+1):(j+11)]<-r.vals[j]*pred.vals[j]*w
+      pred.vals<-pred.vals+place.hold
+    }
+  }
+  state.df$pred<-pred.vals[(length(cases)):(length(cases)+14)]
+  state.df$state<-collection.of.states[i]
+  us.df<-rbind(us.df,state.df)
+  us.df<-na.omit(us.df)
+}
+
+```
