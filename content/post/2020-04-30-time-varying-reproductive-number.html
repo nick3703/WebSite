@@ -125,7 +125,7 @@ rt.func.v3_dusty&lt;-function(dat,mean.Weibull=4.8,sd.Weibull=2.3){
 }
 
 
-jhu_all&lt;-read_csv(&quot;https://raw.githubusercontent.com/nick3703/Parametric-Modeling-for-Time-Varying-Reproducibility-Number/master/2020-04-30_JHU.csv&quot;)
+jhu_all&lt;-read_csv(paste0(&quot;https://raw.githubusercontent.com/nick3703/Parametric-Modeling-for-Time-Varying-Reproducibility-Number/master/&quot;,lubridate::today(),&quot;_JHU.csv&quot;)
 
 state.names&lt;-read_csv(&quot;https://raw.githubusercontent.com/nick3703/Parametric-Modeling-for-Time-Varying-Reproducibility-Number/master/StateNames.csv&quot;)
 
